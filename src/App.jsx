@@ -3,8 +3,8 @@ import { Route, Routes } from 'react-router'
 import Nav from './components/NavBar'
 import Register from './pages/Register'
 import SignIn from './pages/SignIn'
-// import Feed from './pages/Feed'
-// import Home from './pages/Home'
+import Feed from './pages/Feed'
+import Home from './pages/Home'
 import { CheckSession } from './services/Auth'
 import './App.css'
 
@@ -38,7 +38,7 @@ const checkToken = async () => {
       <Nav user={user} handleLogOut={handleLogOut} />
       <main>
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn setUser={ setUser }/>} />
           <Route path="/register" element={<Register />} />
           {/* <Route path="/feed" element={<Feed user={ user }/>} /> */}

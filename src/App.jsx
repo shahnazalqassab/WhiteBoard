@@ -3,9 +3,9 @@ import { Route, Routes } from 'react-router'
 import Nav from './components/NavBar'
 import Register from './pages/Register'
 import SignIn from './pages/SignIn'
-import Feed from './pages/Feed'
+import Courses from './pages/Courses'
 import Home from './pages/Home'
-import { CheckSession } from './services/Auth'
+import { CheckSession } from './services/User'
 import './App.css'
 
 const App = () => {
@@ -22,7 +22,6 @@ const App = () => {
 }, [])
 
   const handleLogOut = () => {
-    //Reset all auth related state and clear localStorage
     setUser(null)
     localStorage.clear()
   }
@@ -41,7 +40,7 @@ const checkToken = async () => {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn setUser={ setUser }/>} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/feed" element={<Feed user={ user }/>} /> */}
+          <Route path="/courses" element={<Courses user={ user }/>} />
         </Routes>
       </main>
     </>

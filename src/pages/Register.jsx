@@ -16,20 +16,21 @@ const Register = () => {
 
   const [formValues, setFormValues] = useState(initialState)
 
-  const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.id]: e.target.value })
+  const handleChange = (event) => {
+    setFormValues({ ...formValues, [event.target.id]: event.target.value })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     await RegisterUser({
       username: formValues.username,
+      name: formValues.name,
       email: formValues.email,
       password: formValues.password,
       category: formValues.category
     })
     setFormValues(initialState)
-    navigate('/user/login')
+    navigate('/login')
   }
 
   return (
@@ -42,10 +43,9 @@ const Register = () => {
             onChange={handleChange}
             id="username"
             type="text"
-            placeholder="Jaays"
+            placeholder="write username"
             value={formValues.username}
             required
-            autoComplete="username"
           />
         </div>
         <div className="input-wrapper">
@@ -54,10 +54,9 @@ const Register = () => {
             onChange={handleChange}
             id="name"
             type="text"
-            placeholder="Jaffar Ali"
+            placeholder="Write your name"
             value={formValues.name}
             required
-            autoComplete="name"
           />
         </div>
         <div className="input-wrapper">
@@ -69,7 +68,6 @@ const Register = () => {
             placeholder="example@example.com"
             value={formValues.email}
             required
-            autoComplete="email"
           />
         </div>
         <div className="input-wrapper">
@@ -96,13 +94,11 @@ const Register = () => {
           <label htmlFor="category">Category</label>
           <select
             onChange={handleChange}
-            type="category"
             id="category"
-            placeholder="student or teacher"
             value={formValues.category}
             required
-            autoComplete="category"
           >
+            <option value="">Select Category</option>            
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
           </select>

@@ -36,7 +36,7 @@ const Register = () => {
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <div className="input-wrapper">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="username">Username</label>
           <input
             onChange={handleChange}
             id="username"

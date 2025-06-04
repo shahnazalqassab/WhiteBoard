@@ -1,6 +1,6 @@
 import Client from './api'
 
-export const GetCourses = async () => {
+export const Courses = async () => {
   try {
     const res = await Client.get('/courses')
     return res.data

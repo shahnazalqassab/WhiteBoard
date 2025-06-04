@@ -15,10 +15,14 @@ const App = () => {
   useEffect( () => {
   const token = localStorage.getItem('token')
 
+  const checkToken = async () => {
+    const user = await CheckSession()
+    setUser(user)
+      }
+
     if (token) {
       checkToken()
     }
-
 }, [])
 
   const handleLogOut = () => {
@@ -26,10 +30,7 @@ const App = () => {
     localStorage.clear()
   }
 
-const checkToken = async () => {
-  const user = await CheckSession()
-  setUser(user)
-}
+
 
 
   return (

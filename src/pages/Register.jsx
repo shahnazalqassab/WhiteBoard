@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 const Register = () => {
   let navigate = useNavigate()
+  
   const initialState = {
     username: '',
     name: '',

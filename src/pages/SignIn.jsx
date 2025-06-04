@@ -16,12 +16,12 @@ const SignIn = ({ setUser }) => {
     setFormValues ({ ...formValues, [e.target.id]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    const payload = await SignInUser(formValues)
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const payload = await SignInUser({formValues})
     setFormValues(initialState)
-    setUser(payload)
-    navigate('/')
+    setUser({payload})
+    navigate('/user/login')
   }
 
   return (

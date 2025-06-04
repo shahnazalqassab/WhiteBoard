@@ -19,7 +19,7 @@ const NavBar = ({ user, handleLogOut }) => {
     <nav>
       <Link to="/">Home</Link>
       <Link to="/user/register">Register</Link>
-      <Link to="/user/signin">Sign In</Link>
+      <Link to="/user/login">Sign In</Link>
     </nav>
   )
 

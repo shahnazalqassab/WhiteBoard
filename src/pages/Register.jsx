@@ -29,7 +29,7 @@ const Register = () => {
       category: formValues.category
     })
     setFormValues(initialState)
-    navigate('/user/signin')
+    navigate('/user/login')
   }
 
   return (

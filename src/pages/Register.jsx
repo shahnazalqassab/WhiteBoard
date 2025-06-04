@@ -96,13 +96,11 @@ const Register = () => {
           <label htmlFor="category">Category</label>
           <select
             onChange={handleChange}
-            type="category"
             id="category"
-            placeholder="student or teacher"
             value={formValues.category}
             required
-            autoComplete="category"
           >
+            <option value="">Select Category</option>            
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
           </select>

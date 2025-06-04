@@ -18,6 +18,7 @@ const SignIn = ({ setUser }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    
     const payload = await SignInUser(formValues)
     setFormValues(initialState)
     setUser(payload)

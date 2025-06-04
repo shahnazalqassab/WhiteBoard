@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router'
-import Nav from './components/NavBar'
+import NavBar from './components/NavBar'
 import Register from './pages/Register'
 import SignIn from './pages/SignIn'
 import Courses from './pages/Courses'
@@ -34,7 +34,7 @@ const checkToken = async () => {
 
   return (
     <>
-      <Nav user={user} handleLogOut={handleLogOut} />
+      <NavBar user={user} handleLogOut={handleLogOut} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />

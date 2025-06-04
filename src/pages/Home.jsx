@@ -11,7 +11,6 @@ const Home = () => {
           Click Here To Get Started
         </button> 
       </section> */}
-
     </div>
   )
 }

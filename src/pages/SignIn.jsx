@@ -12,8 +12,8 @@ const SignIn = ({ setUser }) => {
 
   const [formValues, setFormValues] = useState(initialState)
 
-  const handleChange = (e) => {
-    setFormValues ({ ...formValues, [e.target.id]: e.target.value })
+  const handleChange = (event) => {
+    setFormValues ({ ...formValues, [event.target.id]: event.target.value })
   }
 
   const handleSubmit = async (event) => {
@@ -33,10 +33,9 @@ const SignIn = ({ setUser }) => {
             onChange={handleChange}
             id="username"
             type="text"
-            placeholder="Jaays"
+            placeholder="Enter username"
             value={formValues.username}
             required
-            autoComplete="username"
           />
         </div>
         <div className="input-wrapper">

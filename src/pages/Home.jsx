@@ -7,7 +7,7 @@ const Home = () => {
     <div className="">
       <h1>Welcome to WhiteBoard e-Class</h1>
       <section className="">
-        <button onClick={() => navigate('/user/login')}>Sign In</button> 
+        <button onClick={() => navigate('/login')}>Sign In</button> 
       </section>
     </div>
   )

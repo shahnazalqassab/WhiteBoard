@@ -12,18 +12,18 @@ const App = () => {
   const [user, setUser] = useState(null)
 
 
-  useEffect( () => {
-  const token = localStorage.getItem('token')
+  useEffect(() => {
+    const token = localStorage.getItem('token')
 
-  const checkToken = async () => {
-    const user = await CheckSession()
-    setUser(user)
-      }
+    const checkToken = async () => {
+      const user = await CheckSession()
+      setUser(user)
+    }
 
     if (token) {
       checkToken()
     }
-}, [])
+  }, [])
 
   const handleLogOut = () => {
     setUser(null)
@@ -39,9 +39,12 @@ const App = () => {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<SignIn setUser={ setUser }/>} />
+          <Route path="/login" element={<SignIn setUser={setUser} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/courses" element={<Courses user={ user }/>} />
+          // Add these routes to your existing App.jsx
+          <Route path="/courses" element={<Courses user={user} />} />
+          <Route path="/courses/:id" element={<CourseDetail user={user} />} />
+          <Route path="/courses/edit/:id" element={<CourseForm user={user} />} />
         </Routes>
       </main>
     </>

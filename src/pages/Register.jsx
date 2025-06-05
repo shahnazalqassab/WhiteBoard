@@ -24,6 +24,7 @@ const Register = () => {
     e.preventDefault()
     await RegisterUser({
       username: formValues.username,
+      name: formValues.name,
       email: formValues.email,
       password: formValues.password,
       category: formValues.category

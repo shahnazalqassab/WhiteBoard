@@ -31,7 +31,7 @@ const Register = () => {
       category: formValues.category
     })
     setFormValues(initialState)
-    navigate('/login')
+    navigate('/user/login')
     } catch (error) {
       alert('Registration failed. Please try again.');
     }

@@ -32,19 +32,17 @@ const App = () => {
 
 
 
-
   return (
     <>
       <NavBar user={user} handleLogOut={handleLogOut} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<SignIn setUser={setUser} />} />
-          <Route path="/register" element={<Register />} />
-          // Add these routes to your existing App.jsx
-          <Route path="/courses" element={<Courses user={user} />} />
-          <Route path="/courses/:id" element={<CourseDetail user={user} />} />
-          <Route path="/courses/edit/:id" element={<CourseForm user={user} />} />
+          <Route path="/user/login" element={<SignIn setUser={setUser} />} />
+          <Route path="/user/register" element={<Register />} />
+          <Route path="/courses" element={<Courses user={ user } />} />
+          <Route path="/courses/:id" element={<CourseDetail user={ user } />} />
+          <Route path="/courses/edit/:id" element={<CourseForm user={ user } />} />
         </Routes>
       </main>
     </>

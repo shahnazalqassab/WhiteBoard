@@ -18,8 +18,8 @@ const NavBar = ({ user, handleLogOut }) => {
   const publicOptions = (
     <nav>
       <Link to="/">Home</Link>
-      <Link to="/register">Register</Link>
-      <Link to="/login">Sign In</Link>
+      <Link to="/user/register">Register</Link>
+      <Link to="/user/login">Sign In</Link>
     </nav>
   )
 

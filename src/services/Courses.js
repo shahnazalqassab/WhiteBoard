@@ -1,8 +1,10 @@
-const API_URL = process.env.MONGODB_URI;
+import Client from "./api";
+
+// const API_URL = process.env.MONGODB_URI;
 
 export const GetCourses = async () => {
   try {
-    const response = await fetch(`${API_URL}/courses`)
+    const response = await Client.get('/courses')
     if (!response.ok) throw new Error('Failed to fetch courses')
     return await response.json()
   } catch (error) {
@@ -13,7 +15,7 @@ export const GetCourses = async () => {
 
 export const GetCourseById = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/courses/${id}`)
+    const response = await Client.get(`/courses/${id}`)
     if (!response.ok) throw new Error('Failed to fetch course')
     return await response.json()
   } catch (error) {
@@ -24,7 +26,7 @@ export const GetCourseById = async (id) => {
 
 export const CreateCourse = async (courseData) => {
   try {
-    const response = await fetch(`${API_URL}/courses`, {
+    const response = await Client.get(`/courses`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

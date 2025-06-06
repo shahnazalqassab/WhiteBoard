@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { GetCourseById } from '../services/CourseServices'
+import { GetCourseById } from '../services/Courses'
 
 const CourseDetail = ({ user }) => {
   const { id } = useParams()

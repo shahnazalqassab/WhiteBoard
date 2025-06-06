@@ -1,10 +1,11 @@
-const API_URL = process.env.MONGODB_URI;
+import Client from "./api";
+
+// const API_URL = process.env.MONGODB_URI;
 
 export const GetCourses = async () => {
   try {
-    const response = await fetch(`${API_URL}/courses`)
-    if (!response.ok) throw new Error('Failed to fetch courses')
-    return await response.json()
+    const response = await Client.get('/courses')
+    return  response.data
   } catch (error) {
     console.error('Error fetching courses:', error)
     throw error
@@ -13,9 +14,8 @@ export const GetCourses = async () => {
 
 export const GetCourseById = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/courses/${id}`)
-    if (!response.ok) throw new Error('Failed to fetch course')
-    return await response.json()
+    const response = await Client.get(`/courses/${id}`)
+    return response.data
   } catch (error) {
     console.error(`Error fetching course with id ${id}:`, error)
     throw error
@@ -24,7 +24,7 @@ export const GetCourseById = async (id) => {
 
 export const CreateCourse = async (courseData) => {
   try {
-    const response = await fetch(`${API_URL}/courses`, {
+    const response = await Client.post(`/courses`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export const CreateCourse = async (courseData) => {
 
 export const UpdateCourse = async (id, courseData) => {
   try {
-    const response = await fetch(`${API_URL}/courses/${id}`, {
+    const response = await Client.put(`/courses/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ export const UpdateCourse = async (id, courseData) => {
 
 export const DeleteCourse = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/courses/${id}`, {
+    const response = await Client.delete(`/courses/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -4,6 +4,8 @@ import NavBar from './components/NavBar'
 import Register from './pages/Register'
 import SignIn from './pages/SignIn'
 import Courses from './pages/Courses'
+import CourseDetail from './pages/CourseDetail'
+import CourseForm from './components/courseForm'
 import Home from './pages/Home'
 import { CheckSession } from './services/User'
 import './App.css'
@@ -32,19 +34,17 @@ const App = () => {
 
 
 
-
   return (
     <>
       <NavBar user={user} handleLogOut={handleLogOut} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<SignIn setUser={setUser} />} />
-          <Route path="/register" element={<Register />} />
-          // Add these routes to your existing App.jsx
-          <Route path="/courses" element={<Courses user={user} />} />
-          <Route path="/courses/:id" element={<CourseDetail user={user} />} />
-          <Route path="/courses/edit/:id" element={<CourseForm user={user} />} />
+          <Route path="/user/login" element={<SignIn setUser={setUser} />} />
+          <Route path="/user/register" element={<Register />} />
+          <Route path="/courses" element={<Courses user={ user } />} />
+          <Route path="/courses/:id" element={<CourseDetail user={ user } />} />
+          <Route path="/courses/edit/:id" element={<CourseForm user={ user } />} />
         </Routes>
       </main>
     </>

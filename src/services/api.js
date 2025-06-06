@@ -9,7 +9,10 @@ Client.interceptors.request.use(
 
         const token = localStorage.getItem('token')
 
-        if (token) {
+        if (token && 
+            !config.url.endsWith('/user/register') &&
+            !config.url.endsWith('/user/login') 
+        ) {
         config.headers['authorization'] = `Bearer ${token}`
         }
             return config

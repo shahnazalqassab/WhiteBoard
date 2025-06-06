@@ -22,7 +22,8 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    await RegisterUser({
+    try {
+      await RegisterUser({
       username: formValues.username,
       name: formValues.name,
       email: formValues.email,
@@ -31,6 +32,9 @@ const Register = () => {
     })
     setFormValues(initialState)
     navigate('/login')
+    } catch (error) {
+      alert('Registration failed. Please try again.');
+    }
   }
 
   return (
@@ -106,8 +110,12 @@ const Register = () => {
         <button
           disabled={
             !formValues.username ||
-            (!formValues.password &&
-              formValues.password === formValues.confirmPassword)
+            !formValues.name ||
+            !formValues.email ||
+            !formValues.password ||
+            !formValues.confirmPassword ||
+            formValues.password !== formValues.confirmPassword ||
+            formValues.category === ''
           }
         >
           Sign Up

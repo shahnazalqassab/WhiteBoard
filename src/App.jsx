@@ -8,7 +8,7 @@ import CourseDetail from './pages/CourseDetail'
 import CourseForm from './components/courseForm'
 import Home from './pages/Home'
 import { CheckSession } from './services/User'
-import './App.css'
+import './Styles/App.css'
 
 const App = () => {
   const [user, setUser] = useState(null)

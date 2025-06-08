@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import '../Styles/App.css'
 
 const NavBar = ({ user, handleLogOut }) => {
   let userOptions
@@ -6,11 +7,15 @@ const NavBar = ({ user, handleLogOut }) => {
   if (user) {
     userOptions = (
       <nav>
-        <h3>Welcome {user.name}!</h3>
+        <div className="nav-left">
+          <h3>Welcome {user.name}!</h3>
+        </div>
+        <div className="nav-right">
         <Link to="/courses">Courses</Link>
         <Link onClick={handleLogOut} to="/">
           Sign Out
         </Link>
+        </div>
       </nav>
     )
   }
@@ -18,6 +23,7 @@ const NavBar = ({ user, handleLogOut }) => {
   const publicOptions = (
     <nav>
       <Link to="/">Home</Link>
+      <Link to="/courses">Courses</Link>
       <Link to="/user/register">Register</Link>
       <Link to="/user/login">Sign In</Link>
     </nav>

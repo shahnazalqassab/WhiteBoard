@@ -26,7 +26,8 @@ const SignIn = ({ setUser }) => {
   }
 
   return (
-    <div className="signin">
+    <div className="col signin">
+      <h1>Sign In</h1>
       <form onSubmit={handleSubmit}>
         <div className='input-wrapper'>
           <label htmlFor="username">Username</label>

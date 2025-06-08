@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { RegisterUser } from '../services/User'
 import { useState } from 'react'
+import { set } from 'mongoose'
 
 const Register = () => {
   let navigate = useNavigate()
@@ -15,9 +16,11 @@ const Register = () => {
   }
 
   const [formValues, setFormValues] = useState(initialState)
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (event) => {
     setFormValues({ ...formValues, [event.target.id]: event.target.value })
+    setErrorMsg(''); // Clear error message on input change
   }
 
   const handleSubmit = async (event) => {

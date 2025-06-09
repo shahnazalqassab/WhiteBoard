@@ -1,3 +1,4 @@
+import React from 'react'
 
 const CourseList = ({ courses, onEdit, onDelete, onView, user }) => {
   return (
@@ -14,13 +15,8 @@ const CourseList = ({ courses, onEdit, onDelete, onView, user }) => {
               </div>
               
               {user && user._id === course.owner?._id && (
-                <div className="course-actions">
-                  <button onClick={(event) => {event.stopPropagation(), onEdit(course)}}>
-                    Edit
-                  </button>
-                  <button onClick={(event) => {event.stopPropagation(), onDelete(course._id)}}>
-                    Delete
-                  </button>
+                <div className="user massage">
+                  <p>Enter to edit/delete your course</p>
                 </div>
               )}
             </li>

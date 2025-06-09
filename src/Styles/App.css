@@ -312,8 +312,17 @@ button:disabled {
 
 .course-actions {
   display: flex;
+  align-items: center;
   gap: 0.7rem;
   margin-top: auto;
+}
+
+.user.massage p {
+  color: #9d6161;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  text-decoration: underline;
+
 }
 
 .btn.btn-sm {

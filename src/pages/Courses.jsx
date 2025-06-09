@@ -25,7 +25,7 @@ const Courses = ({ user }) => {
 
     const handleCreate = async (courseData) => {
         try {
-        const newCourse = await CreateCourse({ ...courseData, owner: user.id })
+        const newCourse = await CreateCourse({ ...courseData, owner: user._id })
         setCourses([...courses, newCourse])
         setShowForm(false)
         } catch (error) {

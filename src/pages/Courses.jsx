@@ -1,8 +1,8 @@
 
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import CourseList from '../components/courseList'
-import CourseForm from '../components/courseForm'
+import CourseList from '../components/CourseList'
+import CourseForm from '../components/CourseForm'
 import { GetCourses, CreateCourse, UpdateCourse, DeleteCourse } from '../services/Courses'
 
 const Courses = ({ user }) => {
@@ -63,39 +63,19 @@ const Courses = ({ user }) => {
         <div className="courses-page">
         <h1>Courses</h1>
             {user && user.category === 'teacher' && (
-            <button 
-                onClick={() => {
-                setSelectedCourse(null)
-                setShowForm(true)
-                }}
-                className="btn btn-primary"
+            <button onClick={() => {setSelectedCourse(null)
+                setShowForm(true)}} className="btn btn-primary"
             >
                 Create New Course
             </button>
             )}
         
-        {showForm && (
-            <CourseForm 
-            course={selectedCourse} 
-            onSubmit={selectedCourse ? 
-                (data) => handleUpdate(selectedCourse._id, data) : 
-                handleCreate
-            }
-            onCancel={() => setShowForm(false)}
-            user={user}
-            />
-        )}
+            {showForm && (
+                <CourseForm course={selectedCourse} onSubmit={handleCreate} onCancel={() => setShowForm(false)} user={user}/>
+            )}
         
-        <CourseList 
-            courses={courses} 
-            onEdit={(course) => {
-            setSelectedCourse(course)
-            setShowForm(true)
-            }}
-            onDelete={handleDelete}
-            onView={handleViewCourse}
-            user={user}
-        />
+            <CourseList courses={courses} onEdit={(course) => {setSelectedCourse(course)
+                setShowForm(true)}} onDelete={handleDelete} onView={handleViewCourse} user={user}/>
         </div>
     )
 }

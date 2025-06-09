@@ -29,43 +29,53 @@ const CourseDetail = ({ user }) => {
 
   return (
     <div className="course-detail">
-      <button onClick={() => navigate(-1)} className="btn btn-back">
+      <button onClick={() => navigate(-1)}>
         Back to Courses
       </button>
       
       <h1>{course.name}</h1>
       <p>Instructor: {course.owner?.name || 'Unknown'}</p>
       
-      <div className="lesson-section">
-        <h2>Lesson: {course.lessons.title}</h2>
-        <div className="lesson-material">
-          <h3>Material:</h3>
-          <p>{course.lessons.material}</p>
-        </div>
-        
+   {course.lessons && course.lessons.length > 0 ? (
+  course.lessons.map((lesson, id) => (
+    <div className="lesson-section" key={id}>
+      <h2>Lesson: {lesson.title}</h2>
+      <div className="lesson-material">
+        <h3>Material:</h3>
+        <p>{lesson.material}</p>
+      </div>
+      {lesson.assignment && (
         <div className="assignment">
-          <h3>Assignment: {course.lessons.assignment.title}</h3>
-          <p>{course.lessons.assignment.material}</p>
-          {course.lessons.assignment.document && (
-            <a 
-              href={course.lessons.assignment.document} 
-              target="_blank" 
-              rel="noopener noreferrer"
+          <h3>Assignment: {lesson.assignment.title}</h3>
+          <p>{lesson.assignment.material}</p>
+          {lesson.assignment.document && (
+            <a
               className="btn btn-document"
+              href={lesson.assignment.document}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               View Assignment Document
             </a>
           )}
         </div>
-      </div>
-      
-      {user && user.id === course.owner?._id && (
+      )}
+    </div>
+  ))
+) : (
+  <div className="lessons-message">
+    No lessons have been added to this course yet.
+  </div>
+)}
+
+      {user && user._id === course.owner?._id && (
         <div className="course-actions">
           <button 
-            onClick={() => navigate(`/courses/edit/${course._id}`)}
-            className="btn btn-edit"
-          >
+            onClick={() => navigate(`/courses/edit/${course._id}`)}>
             Edit Course
+          </button>
+          <button onClick={() => navigate(`/courses/edit/${course._id}`)}>
+            Delete
           </button>
         </div>
       )}

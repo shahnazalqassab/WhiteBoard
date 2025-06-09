@@ -326,22 +326,10 @@ button:disabled {
   transition: background 0.18s;
 }
 
-.btn-edit {
-  background: #22a0f4;
-  color: #fff;
-}
-
-.btn-edit:hover {
-  background: #1f2a60;
-}
-
-.btn-delete {
-  background: #e74c3c;
-  color: #fff;
-}
-
-.btn-delete:hover {
-  background: #b71c1c;
+.lessons-message {
+  text-align: 'center';
+  margin: 2rem 0;
+  color: #888;
 }
 
 /* Course form design */
@@ -471,7 +459,7 @@ button:disabled {
   margin-top: 1.5rem;
 }
 
-.btn.btn-edit {
+.button-edit {
   background: #ffd700;
   color: #1f2a60;
   border: none;
@@ -483,7 +471,7 @@ button:disabled {
   transition: background 0.2s;
 }
 
-.btn.btn-edit:hover {
+.button-edit:hover {
   background: #22a0f4;
   color: #fff;
 }

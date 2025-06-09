@@ -24,16 +24,16 @@ export const GetCourseById = async (id) => {
 
 export const CreateCourse = async (courseData) => {
   try {
-    const response = await Client.post(`/courses`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify(courseData)
-    })
-    if (!response.ok) throw new Error('Failed to create course')
-    return await response.json()
+    const response = await Client.post(
+      '/courses',
+      courseData,
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    )
+    return response.data
   } catch (error) {
     console.error('Error creating course:', error)
     throw error
@@ -42,16 +42,17 @@ export const CreateCourse = async (courseData) => {
 
 export const UpdateCourse = async (id, courseData) => {
   try {
-    const response = await Client.put(`/courses/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify(courseData)
-    })
-    if (!response.ok) throw new Error('Failed to update course')
-    return await response.json()
+    const response = await Client.put(
+      `/courses/${id}`,
+      courseData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    )
+    return response.data
   } catch (error) {
     console.error(`Error updating course with id ${id}:`, error)
     throw error
@@ -60,14 +61,15 @@ export const UpdateCourse = async (id, courseData) => {
 
 export const DeleteCourse = async (id) => {
   try {
-    const response = await Client.delete(`/courses/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const response = await Client.delete(
+      `/courses/${id}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       }
-    })
-    if (!response.ok) throw new Error('Failed to delete course')
-    return await response.json()
+    )
+    return response.data
   } catch (error) {
     console.error(`Error deleting course with id ${id}:`, error)
     throw error

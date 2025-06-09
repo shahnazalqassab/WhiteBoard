@@ -1,3 +1,4 @@
+import React from 'react'
 
 const CourseList = ({ courses, onEdit, onDelete, onView, user }) => {
   return (

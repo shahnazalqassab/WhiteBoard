@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-const CourseEdit = ({ course, onSubmit, onCancel, user }) => {
+const CourseEdit = ({ course, onSubmit, user }) => {
+  const navigate = useNavigate()
   console.log('course:', course)
-
+  
   const [name, setName] = useState('')
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const CourseEdit = ({ course, onSubmit, onCancel, user }) => {
         </div>
         <div className="form-actions">
           <button type="submit">Update Course</button>
-          <button type="button" onClick={onCancel}>Cancel</button>        </div>
+          <button type="button" onClick={() => navigate('/courses')}>Cancel</button>        </div>
       </form>
     </div>
   )

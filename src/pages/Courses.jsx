@@ -62,17 +62,17 @@ const Courses = ({ user }) => {
   return (
     <div className="courses-page">
       <h1>Courses</h1>
-      {user && (
+        {user && user.category === 'teacher' && (
         <button 
-          onClick={() => {
+            onClick={() => {
             setSelectedCourse(null)
             setShowForm(true)
-          }}
-          className="btn btn-primary"
+            }}
+            className="btn btn-primary"
         >
-          Create New Course
+            Create New Course
         </button>
-      )}
+        )}
       
       {showForm && (
         <CourseForm 

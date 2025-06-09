@@ -1,3 +1,4 @@
+
 const CourseList = ({ courses, onEdit, onDelete, onView, user }) => {
   return (
     <div className="course-list">

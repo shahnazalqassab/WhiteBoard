@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 
 const CourseEdit = ({ course, onSubmit, onCancel, user }) => {
+  console.log('course:', course)
+
   const [name, setName] = useState('')
 
   useEffect(() => {
@@ -28,8 +30,7 @@ const CourseEdit = ({ course, onSubmit, onCancel, user }) => {
         </div>
         <div className="form-actions">
           <button type="submit">Update Course</button>
-          <button type="button" onClick={onCancel}>Cancel</button>
-        </div>
+          <button type="button" onClick={onCancel}>Cancel</button>        </div>
       </form>
     </div>
   )

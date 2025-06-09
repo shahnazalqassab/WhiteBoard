@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CourseList from '../components/CourseList'
 import CourseForm from '../components/CourseForm'
+import CourseEdit from '../components/CourseEdit'
+
 import { GetCourses, CreateCourse, UpdateCourse, DeleteCourse } from '../services/Courses'
 
 const Courses = ({ user }) => {
@@ -47,11 +49,13 @@ const Courses = ({ user }) => {
     }
 
     const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this course?')) {
         try {
-        await DeleteCourse(id)
-        setCourses(courses.filter(course => course._id !== id))
-        } catch (error) {
-        console.error('Error deleting course:', error)
+            await DeleteCourse(id)
+            setCourses(courses.filter(course => course._id !== id))
+        } catch (err) {
+            alert('Failed to delete course.')
+        }
         }
     }
 
@@ -61,23 +65,50 @@ const Courses = ({ user }) => {
 
     return (
         <div className="courses-page">
-        <h1>Courses</h1>
-            {user && user.category === 'teacher' && (
-            <button onClick={() => {setSelectedCourse(null)
-                setShowForm(true)}} className="btn btn-primary"
-            >
-                Create New Course
-            </button>
-            )}
-        
-            {showForm && (
-                <CourseForm course={selectedCourse} onSubmit={handleCreate} onCancel={() => setShowForm(false)} user={user}/>
-            )}
-        
-            <CourseList courses={courses} onEdit={(course) => {setSelectedCourse(course)
-                setShowForm(true)}} onDelete={handleDelete} onView={handleViewCourse} user={user}/>
-        </div>
-    )
+    <h1>Courses</h1>
+    {user && user.category === 'teacher' && (
+        <button
+        onClick={() => {
+            setSelectedCourse(null)
+            setShowForm(true)
+        }}
+        className="btn btn-primary"
+        >
+        Create New Course
+        </button>
+    )}
+
+    {showForm && (
+  selectedCourse ? (
+    <CourseEdit
+      course={selectedCourse}
+      onSubmit={(data) => handleUpdate(selectedCourse._id, data)}
+      onCancel={() => {
+        setShowForm(false)
+        setSelectedCourse(null)
+      }}
+      user={user}
+    />
+  ) : (
+    <CourseForm
+      onSubmit={handleCreate}
+      onCancel={() => setShowForm(false)}
+      user={user}
+    />
+  )
+)}
+    <CourseList
+        courses={courses}
+        onEdit={(course) => {
+            setSelectedCourse(course)
+            setShowForm(true)
+        }}
+        onDelete={handleDelete}
+        onView={handleViewCourse}
+        user={user}
+    />
+    </div>
+)
 }
 
 export default Courses

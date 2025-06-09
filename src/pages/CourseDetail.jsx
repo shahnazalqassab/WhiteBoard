@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { GetCourseById } from '../services/Courses'
+import { GetCourseById, DeleteCourse } from '../services/Courses'
 
 const CourseDetail = ({ user }) => {
   const { id } = useParams()
@@ -22,6 +22,17 @@ const CourseDetail = ({ user }) => {
     }
     fetchCourse()
   }, [id])
+
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this course?')) {
+      try {
+        await DeleteCourse(course._id)
+        navigate('/courses')
+      } catch (err) {
+        alert('Failed to delete course.')
+      }
+    }
+  }
 
   if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {error}</div>
@@ -74,7 +85,7 @@ const CourseDetail = ({ user }) => {
             onClick={() => navigate(`/courses/edit/${course._id}`)}>
             Edit Course
           </button>
-          <button onClick={() => navigate(`/courses/edit/${course._id}`)}>
+          <button onClick={handleDelete}>
             Delete
           </button>
         </div>

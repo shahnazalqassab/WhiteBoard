@@ -237,7 +237,7 @@ button:disabled {
   text-align: center;
 }
 
-.courses-page .btn.btn-primary {
+.courses-page .button-primary {
   display: block;
   margin: 0 auto 2rem auto;
   padding: 0.8rem 2.2rem;
@@ -253,7 +253,7 @@ button:disabled {
   transition: background 0.2s, transform 0.2s;
 }
 
-.courses-page .btn.btn-primary:hover {
+.courses-page .button-primary:hover {
   background: linear-gradient(90deg, #1f2a60 60%, #22a0f4 100%);
   transform: translateY(-2px) scale(1.04);
 }
@@ -326,22 +326,10 @@ button:disabled {
   transition: background 0.18s;
 }
 
-.btn-edit {
-  background: #22a0f4;
-  color: #fff;
-}
-
-.btn-edit:hover {
-  background: #1f2a60;
-}
-
-.btn-delete {
-  background: #e74c3c;
-  color: #fff;
-}
-
-.btn-delete:hover {
-  background: #b71c1c;
+.lessons-message {
+  text-align: 'center';
+  margin: 2rem 0;
+  color: #888;
 }
 
 /* Course form design */
@@ -446,7 +434,7 @@ button:disabled {
   font-weight: 600;
 }
 
-.btn.btn-document {
+.button-document {
   background: #22a0f4;
   color: #fff;
   border: none;
@@ -461,7 +449,7 @@ button:disabled {
   text-decoration: none;
 }
 
-.btn.btn-document:hover {
+.button-document:hover {
   background: #1f2a60;
 }
 
@@ -471,7 +459,7 @@ button:disabled {
   margin-top: 1.5rem;
 }
 
-.btn.btn-edit {
+.button-edit {
   background: #ffd700;
   color: #1f2a60;
   border: none;
@@ -483,7 +471,7 @@ button:disabled {
   transition: background 0.2s;
 }
 
-.btn.btn-edit:hover {
+.button-edit:hover {
   background: #22a0f4;
   color: #fff;
 }

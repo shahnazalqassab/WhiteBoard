@@ -60,6 +60,7 @@ export const UpdateCourse = async (id, courseData) => {
 }
 
 export const DeleteCourse = async (id) => {
+  console.log(id);
   try {
     const response = await Client.delete(
       `/courses/${id}`,

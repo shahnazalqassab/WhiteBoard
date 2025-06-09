@@ -5,7 +5,8 @@ import Register from './pages/Register'
 import SignIn from './pages/SignIn'
 import Courses from './pages/Courses'
 import CourseDetail from './pages/CourseDetail'
-import CourseForm from './components/courseForm'
+import CourseForm from './components/CourseForm'
+import CourseEdit from './components/CourseEdit'
 import Home from './pages/Home'
 import { CheckSession } from './services/User'
 import './Styles/App.css'
@@ -44,7 +45,7 @@ const App = () => {
           <Route path="/user/register" element={<Register />} />
           <Route path="/courses" element={<Courses user={ user } />} />
           <Route path="/courses/:id" element={<CourseDetail user={ user } />} />
-          <Route path="/courses/edit/:id" element={<CourseForm user={ user } />} />
+          <Route path="/courses/edit/:id" element={<CourseEdit user={ user } />} />
         </Routes>
       </main>
     </>

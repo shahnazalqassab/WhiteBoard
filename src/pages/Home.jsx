@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-const Home = () => {
+const Home = ({ user }) => {
   let navigate = useNavigate()
 
   return (
@@ -9,7 +9,9 @@ const Home = () => {
       <p>Learn everywhere, anytime.</p>
       <p>The sky is your limit</p>
       <section className="welcome-signin">
-        <button onClick={() => navigate('/user/login')}>Sign In</button> 
+        {!user && (
+          <button onClick={() => navigate('/user/login')}>Sign In</button>
+        )}
       </section>
     </div>
   )

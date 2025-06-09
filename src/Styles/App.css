@@ -263,7 +263,6 @@ button:disabled {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  justify-content: center;
   margin-top: 2rem;
   padding: 0;
 }
@@ -281,6 +280,7 @@ button:disabled {
 
 .course-item {
   background: #f7fbff;
+  border: 1px solid #1f2a60;
   border-radius: 14px;
   box-shadow: 0 2px 16px rgba(34, 160, 244, 0.10);
   padding: 1.5rem 1.2rem;
@@ -342,4 +342,148 @@ button:disabled {
 
 .btn-delete:hover {
   background: #b71c1c;
+}
+
+/* Course form design */
+.course-form {
+  max-width: 430px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(34, 160, 244, 0.13);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+
+.course-form h2 {
+  color: #22a0f4;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.course-form .form-group {
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+.course-form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #1f2a60;
+  font-weight: 600;
+}
+
+.course-form input,
+.course-form textarea {
+  width: 95%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #b3d8f7;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f7fbff;
+  transition: border 0.2s;
+  resize: vertical;
+}
+
+.course-form input:focus,
+.course-form textarea:focus {
+  border-color: #22a0f4;
+  outline: none;
+}
+
+.course-form .form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* Course detail design */
+.course-detail {
+  max-width: 600px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(34, 160, 244, 0.13);
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-height: 350px;
+}
+
+.course-detail h1 {
+  color: #22a0f4;
+  text-align: center;
+}
+
+.course-detail > p {
+  color: #1f2a60;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.lesson-section {
+  background: #f7fbff;
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.lesson-section h2 {
+  color: #1f2a60;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.lesson-material h3,
+.assignment h3 {
+  color: #22a0f4;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.btn.btn-document {
+  background: #22a0f4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn.btn-document:hover {
+  background: #1f2a60;
+}
+
+.course-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.btn.btn-edit {
+  background: #ffd700;
+  color: #1f2a60;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn.btn-edit:hover {
+  background: #22a0f4;
+  color: #fff;
 }

@@ -34,7 +34,7 @@ const CourseDetail = ({ user }) => {
       </button>
       
       <h1>{course.name}</h1>
-      <p>Created by: {course.owner?.name || 'Unknown'}</p>
+      <p>Instructor: {course.owner?.name || 'Unknown'}</p>
       
       <div className="lesson-section">
         <h2>Lesson: {course.lessons.title}</h2>

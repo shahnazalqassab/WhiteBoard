@@ -11,7 +11,8 @@ const CourseForm = ({ course, onSubmit, onCancel, user }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    onSubmit({ name, owner: user?.id || '' })
+    console.log('user:', user)
+    onSubmit({ name, owner: user?._id || '' })
   }
 
   return (

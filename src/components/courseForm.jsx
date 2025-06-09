@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react'
 
+const emptyLesson = {
+  title: '',
+  material: '',
+  assignment: {
+    title: '',
+    material: '',
+    document: ''
+  }
+}
 const CourseForm = ({ course, onSubmit, onCancel, user }) => {
   const [formData, setFormData] = useState({
     name: '',
-    lessons: {
-      title: '',
-      material: '',
-      assignment: {
-        title: '',
-        material: '',
-        document: ''
-      }
-    },
+    lessons: [{ ...emptyLesson }],
     owner: user?.id || ''
   })
 
@@ -19,44 +20,55 @@ const CourseForm = ({ course, onSubmit, onCancel, user }) => {
     if (course) {
       setFormData({
         name: course.name,
-        lessons: {
-          title: course.lessons.title,
-          material: course.lessons.material,
-          assignment: {
-            title: course.lessons.assignment.title,
-            material: course.lessons.assignment.material,
-            document: course.lessons.assignment.document || ''
-          }
-        },
+        lessons: course.lessons && course.lessons.length > 0
+          ? course.lessons.map(lesson => ({
+              title: lesson.title,
+              material: lesson.material,
+              assignment: lesson.assignment
+                ? {
+                    title: lesson.assignment.title,
+                    material: lesson.assignment.material,
+                    document: lesson.assignment.document || ''
+                  }
+                : { title: '', material: '', document: '' }
+            }))
+          : [ { ...emptyLesson } ],
         owner: course.owner
       })
     }
   }, [course, user])
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    if (name.includes('.')) {
-      const [parent, child, grandchild] = name.split('.')
-      setFormData(prev => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent],
-          [child]: grandchild ? {
-            ...prev[parent][child],
-            [grandchild]: value
-          } : value
+const handleChange = (event, lessonId, assignment) => {
+    const { name, value } = event.target
+    setFormData(prev => {
+      const lessons = [...prev.lessons]
+      if (assignment) {
+        lessons[lessonId].assignment = {
+          ...lessons[lessonId].assignment,
+          [assignment]: value
         }
-      }))
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }))
-    }
+      } else {
+        lessons[lessonId][name] = value
+      }
+      return { ...prev, lessons }
+    })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleAddLesson = () => {
+    setFormData(prev => ({
+      ...prev,
+      lessons: [ ...prev.lessons, { ...emptyLesson } ]
+    }))
+  }
+
+  const handleRemoveLesson = (id) => {
+    setFormData(prev => ({
+      ...prev,
+      lessons: prev.lessons.filter((_, i) => i !== id)
+    }))
+  }
+  const handleSubmit = (event) => {
+    event.preventDefault()
     onSubmit(formData)
   }
 
@@ -70,65 +82,83 @@ const CourseForm = ({ course, onSubmit, onCancel, user }) => {
             type="text"
             name="name"
             value={formData.name}
-            onChange={handleChange}
+            onChange={event => setFormData({ ...formData, name: event.target.value })}
             required
           />
         </div>
 
-        <div className="form-group">
-          <label>Lesson Title:</label>
-          <input
-            type="text"
-            name="lessons.title"
-            value={formData.lessons.title}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Lesson Material:</label>
-          <textarea
-            name="lessons.material"
-            value={formData.lessons.material}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Assignment Title:</label>
-          <input
-            type="text"
-            name="lessons.assignment.title"
-            value={formData.lessons.assignment.title}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Assignment Material:</label>
-          <textarea
-            name="lessons.assignment.material"
-            value={formData.lessons.assignment.material}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Assignment Document URL (optional):</label>
-          <input
-            type="url"
-            name="lessons.assignment.document"
-            value={formData.lessons.assignment.document}
-            onChange={handleChange}
-          />
-        </div>
+        {formData.lessons.map((lesson, id) => (
+          <div className="lesson-block" key={id}>
+            <h3>Lesson {id + 1}</h3>
+            <div className="form-group">
+              <label>Lesson Title:</label>
+              <input
+                type="text"
+                name="title"
+                value={lesson.title}
+                onChange={event => handleChange(event, id)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Lesson Material:</label>
+              <textarea
+                name="material"
+                value={lesson.material}
+                onChange={event => handleChange(event, id)}
+                required
+              />
+            </div>
+            <div className="assignment-block">
+              <h4 style={{ margin: '1rem 0 0.5rem 0' }}>Assignment (optional)</h4>
+              <div className="form-group">
+                <label>Assignment Title:</label>
+                <input
+                  type="text"
+                  value={lesson.assignment?.title || ''}
+                  onChange={event => handleChange(
+                    { target: { value: event.target.value } }, id, 'title'
+                  )}
+                />
+              </div>
+              <div className="form-group">
+                <label>Assignment Material:</label>
+                <textarea
+                  value={lesson.assignment?.material || ''}
+                  onChange={event => handleChange(
+                    { target: { value: event.target.value } }, id, 'material'
+                  )}
+                />
+              </div>
+              <div className="form-group">
+                <label>Assignment Document URL (optional):</label>
+                <input
+                  type="url"
+                  value={lesson.assignment?.document || ''}
+                  onChange={event => handleChange(
+                    { target: { value: event.target.value } }, id, 'document'
+                  )}
+                />
+              </div>
+            </div>
+            {formData.lessons.length > 1 && (
+              <button
+                type="button"
+                className="btn btn-cancel"
+                onClick={() => handleRemoveLesson(id)}
+              >
+                Remove Lesson
+              </button>
+            )}
+            <hr/>
+          </div>
+        ))}
 
         <div className="form-actions">
-          <button type="submit" className="btn btn-submit">
+          <button type="button" className="btn btn-sm" onClick={handleAddLesson}>
+            Add Lesson
+          </button>
+          <button type="submit" className="btn btn-sm">
             {course ? 'Update Course' : 'Create Course'}
           </button>
           <button type="button" onClick={onCancel} className="btn btn-cancel">

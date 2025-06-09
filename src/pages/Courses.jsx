@@ -72,7 +72,7 @@ const Courses = ({ user }) => {
             setSelectedCourse(null)
             setShowForm(true)
         }}
-        className="btn btn-primary"
+        className="button-primary"
         >
         Create New Course
         </button>

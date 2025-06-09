@@ -61,7 +61,7 @@ const CourseDetail = ({ user }) => {
           <p>{lesson.assignment.material}</p>
           {lesson.assignment.document && (
             <a
-              className="btn btn-document"
+              className="button-document"
               href={lesson.assignment.document}
               target="_blank"
               rel="noopener noreferrer"

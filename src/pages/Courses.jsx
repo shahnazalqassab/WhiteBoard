@@ -59,6 +59,10 @@ const Courses = ({ user }) => {
         }
     }
 
+    const handleEdit = (id) => {
+      navigate(`/courses/edit/${id}`)
+}
+
     const handleViewCourse = (id) => {
         navigate(`/courses/${id}`)
     }
@@ -99,10 +103,7 @@ const Courses = ({ user }) => {
 )}
     <CourseList
         courses={courses}
-        onEdit={(course) => {
-            setSelectedCourse(course)
-            setShowForm(true)
-        }}
+        onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleViewCourse}
         user={user}

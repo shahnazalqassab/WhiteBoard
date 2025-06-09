@@ -1,23 +1,55 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+import { GetCourseById } from '../services/Courses'
 
-const CourseEdit = ({ course, onSubmit, user }) => {
+
+const CourseEdit = () => {
+  const { id } = useParams()
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [course, setCourse] = useState(null)
   const navigate = useNavigate()
-  console.log('course:', course)
+
   
+  const fetchCourse = async () => {
+  try {
+        const data = await GetCourseById(id)
+        setCourse(data)
+        setLoading(false)
+      } catch (err) {
+        setError(err.message)
+        setLoading(false)
+      }        
+    }
+
   const [name, setName] = useState('')
 
-  useEffect(() => {
+    useEffect(() => {
+      fetchCourse()
+
+  }, [id])
+
+    useEffect(() => {
     if (course) {
       setName(course.name)
+      console.log('course:', course)
+
     }
   }, [course])
 
+
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log('user:', user)
-    onSubmit({ name, owner: user?._id || '' })
+    // onSubmit({ name, owner: user?._id || '' })
   }
+
+  const handleCancel = () => {
+    navigate(`/courses/${id}`)
+  }
+
+if (loading) return <div>Loading...</div>
+if (error) return <div>Error: {error}</div>
 
   return (
     <div className="course-form">
@@ -32,7 +64,7 @@ const CourseEdit = ({ course, onSubmit, user }) => {
         </div>
         <div className="form-actions">
           <button type="submit">Update Course</button>
-          <button type="button" onClick={() => navigate('/courses')}>Cancel</button>        </div>
+          <button type="button" onClick={handleCancel}>Cancel</button>        </div>
       </form>
     </div>
   )

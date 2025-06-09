@@ -59,7 +59,7 @@ const handleEdit = async () => {
 
   return (
     <div className="course-detail">
-      <button onClick={() => navigate(-1)}>
+      <button onClick={() => navigate('/courses')}>
         Back to Courses
       </button>
       

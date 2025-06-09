@@ -1,0 +1,489 @@
+#root {
+  background-color: #22a0f4;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  color: #1f2a60;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg,  #e0e4ef 60%, #22a0f4 100%);
+  padding: 1rem;
+  color: #1f2a60;
+  font-size: 20px;
+  box-shadow: 0 4px 24px rgba(34, 160, 244, 0.13);
+  max-height: 60px;
+  border-radius: 20px;
+}
+
+.logo {
+  height: 68px;
+  width: auto;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nav-left h3 {
+  margin: 15px;
+  font-size: 1.6rem;
+  color: #1f2a60;
+  text-align: left;
+  
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  color: #1f2a60;
+}
+
+header a {
+  text-decoration: none;
+  font-weight: 500;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+header a:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+header a.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+/* Home design */
+.home-css {
+  max-width: 600px;
+  margin: 4rem auto 0 auto;
+  background: #e0e4ef;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(34, 160, 244, 0.12);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.home-css h1 {
+  color: #22a0f4;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.home-css p {
+  color: #1f2a60;
+  font-size: 1.2rem;
+  margin-bottom: 0.7rem;
+}
+
+.welcome-signin button {
+  margin-top: 1.5rem;
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(90deg, #22a0f4 60%, #1f2a60 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 12px rgba(34, 160, 244, 0.15);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.welcome-signin button:hover {
+  background: linear-gradient(90deg, #1f2a60 60%, #22a0f4 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+
+/* registration form design */
+.col.register {
+  max-width: 400px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(34, 160, 244, 0.12);
+  padding: 2.5rem 2rem;
+}
+
+.col.register h1 {
+  margin-bottom: 1.5rem;
+  color: #22a0f4;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.input-wrapper {
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+.input-wrapper label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #1f2a60;
+  font-weight: 600;
+}
+
+.input-wrapper input,
+.input-wrapper select {
+  width: 95%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #b3d8f7;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f7fbff;
+  transition: border 0.2s;
+  margin-right: 15px;
+
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus {
+  border-color: #22a0f4;
+  outline: none;
+}
+
+
+button {
+  width: 100%;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #22a0f4 60%, #1f2a60 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 12px rgba(34, 160, 244, 0.15);
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+
+button:hover:enabled {
+  background: linear-gradient(90deg, #1f2a60 60%, #22a0f4 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+button:disabled {
+  background: #b3d8f7;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Sign-in form design */
+.col.signin {
+  max-width: 400px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(34, 160, 244, 0.12);
+  padding: 2.5rem 2rem;
+}
+
+
+.col.signin h1 {
+  margin-bottom: 1.5rem;
+  color: #22a0f4;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* courses design */
+.courses-page {
+  max-width: 900px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(34, 160, 244, 0.13);
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-height: 400px;
+}
+
+.courses-page h1 {
+  color: #22a0f4;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.courses-page .btn.btn-primary {
+  display: block;
+  margin: 0 auto 2rem auto;
+  padding: 0.8rem 2.2rem;
+  background: linear-gradient(90deg, #22a0f4 60%, #1f2a60 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 12px rgba(34, 160, 244, 0.15);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.courses-page .btn.btn-primary:hover {
+  background: linear-gradient(90deg, #1f2a60 60%, #22a0f4 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Course card design */
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+  padding: 0;
+}
+
+.course-list ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.course-item {
+  background: #f7fbff;
+  border: 1px solid #1f2a60;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(34, 160, 244, 0.10);
+  padding: 1.5rem 1.2rem;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.18s, box-shadow 0.18s;
+  cursor: pointer;
+}
+
+.course-item:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 6px 32px rgba(34, 160, 244, 0.18);
+}
+
+.course-info h3 {
+  color: #22a0f4;
+  font-size: 1.3rem;
+  margin-bottom: 0.7rem;
+  font-weight: 700;
+}
+
+.course-info p {
+  color: #1f2a60;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.course-actions {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.btn.btn-sm {
+  padding: 0.4rem 1.1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.btn-edit {
+  background: #22a0f4;
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background: #1f2a60;
+}
+
+.btn-delete {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background: #b71c1c;
+}
+
+/* Course form design */
+.course-form {
+  max-width: 430px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(34, 160, 244, 0.13);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+
+.course-form h2 {
+  color: #22a0f4;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.course-form .form-group {
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+.course-form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #1f2a60;
+  font-weight: 600;
+}
+
+.course-form input,
+.course-form textarea {
+  width: 95%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #b3d8f7;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f7fbff;
+  transition: border 0.2s;
+  resize: vertical;
+}
+
+.course-form input:focus,
+.course-form textarea:focus {
+  border-color: #22a0f4;
+  outline: none;
+}
+
+.course-form .form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* Course detail design */
+.course-detail {
+  max-width: 600px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(34, 160, 244, 0.13);
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-height: 350px;
+}
+
+.course-detail h1 {
+  color: #22a0f4;
+  text-align: center;
+}
+
+.course-detail > p {
+  color: #1f2a60;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.lesson-section {
+  background: #f7fbff;
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.lesson-section h2 {
+  color: #1f2a60;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.lesson-material h3,
+.assignment h3 {
+  color: #22a0f4;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.btn.btn-document {
+  background: #22a0f4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn.btn-document:hover {
+  background: #1f2a60;
+}
+
+.course-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.btn.btn-edit {
+  background: #ffd700;
+  color: #1f2a60;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn.btn-edit:hover {
+  background: #22a0f4;
+  color: #fff;
+}

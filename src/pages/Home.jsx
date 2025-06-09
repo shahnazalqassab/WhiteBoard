@@ -4,8 +4,10 @@ const Home = () => {
   let navigate = useNavigate()
 
   return (
-    <div className="">
+    <div className="home-css">
       <h1>Welcome to WhiteBoard e-Class</h1>
+      <p>Learn everywhere, anytime.</p>
+      <p>The sky is your limit</p>
       <section className="welcome-signin">
         <button onClick={() => navigate('/user/login')}>Sign In</button> 
       </section>

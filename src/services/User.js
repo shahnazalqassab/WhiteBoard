@@ -20,12 +20,8 @@ export const SignInUser = async (data) => {
 }
 
 export const updateUserProfile = async (data) => {
-  try {
     const res = await Client.put('/user/profile', data)
   return res.data
-  } catch (error) {
-    throw error
-  }
 }
 
 export const CheckSession = async () => {

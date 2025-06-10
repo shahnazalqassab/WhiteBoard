@@ -1,13 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { updateUserProfile } from '../services/User'
 
 const EditProfile = ({ user, onUpdateSuccess }) => {
   const [formValues, setFormValues] = useState({
-    name: user.name,
-    email: user.email,
+    name: '',
+    email: '',
     password: '',
     confirmPassword: ''
   })
+
+  useEffect(() => {
+    if (user) {
+      setFormValues({
+        name: user.name || '',
+        email: user.email || '',
+        password: '',
+        confirmPassword: ''
+      })
+    }
+  }, [user])
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.id]: e.target.value })
@@ -20,8 +31,14 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
       return
     }
 
+    if (!user) {
+      alert('User data is not available')
+      return
+    }
+
     try {
       await updateUserProfile({
+        _id: user._id,
         name: formValues.name,
         email: formValues.email,
         password: formValues.password
@@ -65,7 +82,7 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
         />
       </div>
       <div>
-        <label>Password</label>
+        <label>Confirm Password</label>
         <input
           type="password"
           id="confirmPassword"

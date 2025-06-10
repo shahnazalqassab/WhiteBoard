@@ -121,20 +121,7 @@ const CourseEdit = ({ user }) => {
                 </div>
 
                 <div className="form-group">
-                    <label>Owner:</label>
-                    <select
-                        name="owner"
-                        value={course.owner}
-                        onChange={handleInputChange}
-                        required
-                        disabled={!user?.isAdmin} // Only admin can change owner
-                    >
-                        {users.map(user => (
-                            <option key={user._id} value={user._id}>
-                                {user.name}
-                            </option>
-                        ))}
-                    </select>
+             
                 </div>
 
                 <div className="lessons-section">

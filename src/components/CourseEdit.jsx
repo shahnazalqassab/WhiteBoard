@@ -43,12 +43,10 @@ const CourseEdit = ({ user }) => {
     fetchData()
   }, [id])
 
-  // Simulated file upload handler (replace with your real upload logic)
   const handleFileUpload = async (e, cb) => {
     const file = e.target.files[0]
     if (!file) return
-    // Simulate upload and get a URL
-    // Replace this with your actual upload logic
+
     const fakeUrl = URL.createObjectURL(file)
     cb(fakeUrl)
   }
@@ -129,12 +127,7 @@ const CourseEdit = ({ user }) => {
           />
         </div>
         <div className="form-group">
-          <label>Owner:</label>
-          <input
-            type="text"
-            value={user?.name || ''}
-            disabled
-          />
+      
         </div>
 
         <div className="lessons-section">
@@ -181,9 +174,16 @@ const CourseEdit = ({ user }) => {
               type="file"
               accept="application/pdf"
               onChange={e => handleFileUpload(e, url => setNewLesson(prev => ({ ...prev, material: url })))}
+              required
             />
-            {newLesson.material && <a href={newLesson.material} target="_blank" rel="noopener noreferrer">Preview Material</a>}
-            <button type="button" onClick={addLesson} disabled={!newLesson.title || !newLesson.material}>Add Lesson</button>
+            {newLesson.material && (
+              <a href={newLesson.material} target="_blank" rel="noopener noreferrer">
+                Preview Lesson Material
+              </a>
+            )}
+            <button type="button" onClick={addLesson} disabled={!newLesson.title || !newLesson.material}>
+              Add Lesson
+            </button>
             <button type="button" onClick={closeLessonModal}>Cancel</button>
           </div>
         </div>
@@ -201,19 +201,19 @@ const CourseEdit = ({ user }) => {
               onChange={e => setNewAssignment(prev => ({ ...prev, title: e.target.value }))}
               required
             />
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={e => handleFileUpload(e, url => setNewAssignment(prev => ({ ...prev, material: url })))}
+            <textarea
+              placeholder="Assignment Description"
+              value={newAssignment.material}
+              onChange={e => setNewAssignment(prev => ({ ...prev, material: e.target.value }))}
+              required
             />
-            {newAssignment.material && <a href={newAssignment.material} target="_blank" rel="noopener noreferrer">Preview Material</a>}
             <input
               type="file"
               accept="application/pdf"
               onChange={e => handleFileUpload(e, url => setNewAssignment(prev => ({ ...prev, document: url })))}
             />
             {newAssignment.document && <a href={newAssignment.document} target="_blank" rel="noopener noreferrer">Preview Document</a>}
-            <button type="button" onClick={addAssignment} disabled={!newAssignment.title || !newAssignment.material || !newAssignment.document}>Add Assignment</button>
+            <button type="button" onClick={addAssignment} disabled={!newAssignment.title || !newAssignment.material}>Add Assignment</button>
             <button type="button" onClick={closeAssignmentModal}>Cancel</button>
           </div>
         </div>

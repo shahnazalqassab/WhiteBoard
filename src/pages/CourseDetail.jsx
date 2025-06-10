@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { GetCourseById, DeleteCourse } from '../services/Courses'
-import CourseEdit from '../components/CourseEdit'
 
 const CourseDetail = ({ user }) => {
   const { id } = useParams()
@@ -9,9 +8,6 @@ const CourseDetail = ({ user }) => {
   const [course, setCourse] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [showForm, setShowForm] = useState(false)
-  const [selectedCourse, setSelectedCourse] = useState(null)
-
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -27,20 +23,9 @@ const CourseDetail = ({ user }) => {
     fetchCourse()
   }, [id])
 
-
-const handleEdit = async () => {
-  try {
-        const data = await GetCourseById(id)
-        setSelectedCourse(data)
-        setLoading(false)
-      } catch (err) {
-        setError(err.message)
-        setLoading(false)
-      }
-    setShowForm(true)
+  const handleEdit = () => {
     navigate(`/courses/edit/${course._id}`)
-}
-
+  }
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this course?')) {
@@ -62,61 +47,45 @@ const handleEdit = async () => {
       <button onClick={() => navigate('/courses')}>
         Back to Courses
       </button>
-      
+
       <h1>{course.name}</h1>
       <p>Instructor: {course.owner?.name || 'Unknown'}</p>
-      
-   {course.lessons && course.lessons.length > 0 ? (
-  course.lessons.map((lesson, id) => (
-    <div className="lesson-section" key={id}>
-      <h2>Lesson: {lesson.title}</h2>
-      <div className="lesson-material">
-        <h3>Material:</h3>
-        <p>{lesson.material}</p>
-      </div>
-      {lesson.assignment && (
-        <div className="assignment">
-          <h3>Assignment: {lesson.assignment.title}</h3>
-          <p>{lesson.assignment.material}</p>
-          {lesson.assignment.document && (
-            <a
-              className="button-document"
-              href={lesson.assignment.document}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View Assignment Document
-            </a>
-          )}
+
+      {course.lessons && course.lessons.length > 0 ? (
+        course.lessons.map((lesson, id) => (
+          <div className="lesson-section" key={id}>
+            <h2>Lesson: {lesson.title}</h2>
+            <div className="lesson-material">
+              <h3>Material:</h3>
+              <p>{lesson.material}</p>
+            </div>
+            {lesson.assignment && (
+              <div className="assignment">
+                <h3>Assignment: {lesson.assignment.title}</h3>
+                <p>{lesson.assignment.material}</p>
+                {lesson.assignment.document && (
+                  <a
+                    className="button-document"
+                    href={lesson.assignment.document}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Assignment Document
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        ))
+      ) : (
+        <div className="lessons-message">
+          No lessons have been added to this course yet.
         </div>
       )}
-    </div>
-  ))
-) : (
-  <div className="lessons-message">
-    No lessons have been added to this course yet.
-  </div>
-)}
-
-{showForm && (
-  selectedCourse ? (
-    <CourseEdit
-      course={selectedCourse}
-      onSubmit={(data) => handleUpdate(selectedCourse._id, data)}
-      onCancel={() => {
-        setShowForm(false)
-        setSelectedCourse(null)
-      }}
-      user={user}
-    />
-  ) : (
-    <p>Error</p>
-  ))}
-
 
       {user && user._id === course.owner?._id && (
         <div className="course-actions">
-          <button 
+          <button
             onClick={handleEdit}>Edit Course
           </button>
           <button onClick={handleDelete}>

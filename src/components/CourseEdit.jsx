@@ -1,55 +1,118 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { GetCourseById } from '../services/Courses'
+import { GetCourseById, UpdateCourse } from '../services/Courses'
 
-
-const CourseEdit = () => {
+const CourseEdit = ({ user }) => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [course, setCourse] = useState(null)
-  const navigate = useNavigate()
+  const [course, setCourse] = useState({
+    name: '',
+    owner: '',
+    lessons: []
+  })
+  const [showLessonModal, setShowLessonModal] = useState(false)
+  const [showAssignmentModal, setShowAssignmentModal] = useState(false)
+  const [currentLessonIndex, setCurrentLessonIndex] = useState(null)
+  const [newLesson, setNewLesson] = useState({
+    title: '',
+    material: '',
+    assignments: []
+  })
+  const [newAssignment, setNewAssignment] = useState({
+    title: '',
+    material: '',
+    document: ''
+  })
 
-  
-  const fetchCourse = async () => {
-  try {
-        const data = await GetCourseById(id)
-        setCourse(data)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const courseData = await GetCourseById(id)
+        setCourse({
+          ...courseData,
+          owner: courseData.owner?._id || ''
+        })
         setLoading(false)
       } catch (err) {
         setError(err.message)
         setLoading(false)
-      }        
+      }
     }
-
-  const [name, setName] = useState('')
-
-    useEffect(() => {
-      fetchCourse()
-
+    fetchData()
   }, [id])
 
-    useEffect(() => {
-    if (course) {
-      setName(course.name)
-      console.log('course:', course)
+  // Simulated file upload handler (replace with your real upload logic)
+  const handleFileUpload = async (e, cb) => {
+    const file = e.target.files[0]
+    if (!file) return
+    // Simulate upload and get a URL
+    // Replace this with your actual upload logic
+    const fakeUrl = URL.createObjectURL(file)
+    cb(fakeUrl)
+  }
 
+  // Lesson Modal Handlers
+  const openLessonModal = () => {
+    setNewLesson({ title: '', material: '', assignments: [] })
+    setShowLessonModal(true)
+  }
+  const closeLessonModal = () => setShowLessonModal(false)
+  const addLesson = () => {
+    setCourse(prev => ({
+      ...prev,
+      lessons: [...prev.lessons, newLesson]
+    }))
+    setShowLessonModal(false)
+  }
+
+  // Assignment Modal Handlers
+  const openAssignmentModal = (lessonIdx) => {
+    setCurrentLessonIndex(lessonIdx)
+    setNewAssignment({ title: '', material: '', document: '' })
+    setShowAssignmentModal(true)
+  }
+  const closeAssignmentModal = () => setShowAssignmentModal(false)
+  const addAssignment = () => {
+    setCourse(prev => {
+      const lessons = [...prev.lessons]
+      lessons[currentLessonIndex].assignments = [
+        ...(lessons[currentLessonIndex].assignments || []),
+        newAssignment
+      ]
+      return { ...prev, lessons }
+    })
+    setShowAssignmentModal(false)
+  }
+
+  const removeLesson = (index) => {
+    setCourse(prev => ({
+      ...prev,
+      lessons: prev.lessons.filter((_, i) => i !== index)
+    }))
+  }
+
+  const removeAssignment = (lessonIdx, assignmentIdx) => {
+    setCourse(prev => {
+      const lessons = [...prev.lessons]
+      lessons[lessonIdx].assignments = lessons[lessonIdx].assignments.filter((_, i) => i !== assignmentIdx)
+      return { ...prev, lessons }
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      await UpdateCourse(id, course)
+      navigate(`/courses/${id}`)
+    } catch (err) {
+      setError(err.message)
     }
-  }, [course])
-
-
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    // onSubmit({ name, owner: user?._id || '' })
   }
 
-  const handleCancel = () => {
-    navigate(`/courses/${id}`)
-  }
-
-if (loading) return <div>Loading...</div>
-if (error) return <div>Error: {error}</div>
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error}</div>
 
   return (
     <div className="course-form">
@@ -57,15 +120,104 @@ if (error) return <div>Error: {error}</div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Course Name:</label>
-          <input type="text" name="name" value={name}
-            onChange={event => setName(event.target.value)}
+          <input
+            type="text"
+            name="name"
+            value={course.name}
+            onChange={e => setCourse(prev => ({ ...prev, name: e.target.value }))}
             required
           />
         </div>
+        <div className="form-group">
+          <label>Owner:</label>
+          <input
+            type="text"
+            value={user?.name || ''}
+            disabled
+          />
+        </div>
+
+        <div className="lessons-section">
+          <h3>Lessons</h3>
+          {course.lessons.map((lesson, lIdx) => (
+            <div key={lIdx} className="lesson-item">
+              <h4>{lesson.title}</h4>
+              <a href={lesson.material} target="_blank" rel="noopener noreferrer">View Lesson Material</a>
+              <button type="button" onClick={() => removeLesson(lIdx)}>Remove Lesson</button>
+              <h5>Assignments</h5>
+              {(lesson.assignments || []).map((assignment, aIdx) => (
+                <div key={aIdx} className="assignment-item">
+                  <strong>{assignment.title}</strong>
+                  <a href={assignment.material} target="_blank" rel="noopener noreferrer">View Assignment Material</a>
+                  <a href={assignment.document} target="_blank" rel="noopener noreferrer">View Document</a>
+                  <button type="button" onClick={() => removeAssignment(lIdx, aIdx)}>Remove Assignment</button>
+                </div>
+              ))}
+              <button type="button" onClick={() => openAssignmentModal(lIdx)}>Add Assignment</button>
+            </div>
+          ))}
+          <button type="button" onClick={openLessonModal}>Add Lesson</button>
+        </div>
+
         <div className="form-actions">
-          <button type="submit">Update Course</button>
-          <button type="button" onClick={handleCancel}>Cancel</button>        </div>
+          <button type="submit" className="update-btn">Update Course</button>
+          <button type="button" className="cancel-btn" onClick={() => navigate(`/courses/${id}`)}>Cancel</button>
+        </div>
       </form>
+
+      {/* Lesson Modal */}
+      {showLessonModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h4>Add Lesson</h4>
+            <input
+              type="text"
+              placeholder="Lesson Title"
+              value={newLesson.title}
+              onChange={e => setNewLesson(prev => ({ ...prev, title: e.target.value }))}
+              required
+            />
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={e => handleFileUpload(e, url => setNewLesson(prev => ({ ...prev, material: url })))}
+            />
+            {newLesson.material && <a href={newLesson.material} target="_blank" rel="noopener noreferrer">Preview Material</a>}
+            <button type="button" onClick={addLesson} disabled={!newLesson.title || !newLesson.material}>Add Lesson</button>
+            <button type="button" onClick={closeLessonModal}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {/* Assignment Modal */}
+      {showAssignmentModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h4>Add Assignment</h4>
+            <input
+              type="text"
+              placeholder="Assignment Title"
+              value={newAssignment.title}
+              onChange={e => setNewAssignment(prev => ({ ...prev, title: e.target.value }))}
+              required
+            />
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={e => handleFileUpload(e, url => setNewAssignment(prev => ({ ...prev, material: url })))}
+            />
+            {newAssignment.material && <a href={newAssignment.material} target="_blank" rel="noopener noreferrer">Preview Material</a>}
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={e => handleFileUpload(e, url => setNewAssignment(prev => ({ ...prev, document: url })))}
+            />
+            {newAssignment.document && <a href={newAssignment.document} target="_blank" rel="noopener noreferrer">Preview Document</a>}
+            <button type="button" onClick={addAssignment} disabled={!newAssignment.title || !newAssignment.material || !newAssignment.document}>Add Assignment</button>
+            <button type="button" onClick={closeAssignmentModal}>Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

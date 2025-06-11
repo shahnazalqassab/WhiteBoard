@@ -24,7 +24,6 @@ const Profile = ({ user, setUser }) => {
         <div className="col register">
           <p>Name: {user.name}</p>
           <p>Email: {user.email}</p>
-          <p>Password: {user.password}</p>
           <p>Category: {user.category}</p>
           <button className="button-primary" onClick={handleEditClick}>
             Edit Profile

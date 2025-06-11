@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { updateUserProfile } from '../services/User'
-
 const EditProfile = ({ user, onUpdateSuccess }) => {
   const [formValues, setFormValues] = useState({
     name: '',
@@ -8,7 +7,6 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
     password: '',
     confirmPassword: ''
   })
-
   useEffect(() => {
     if (user) {
       setFormValues({
@@ -19,11 +17,9 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
       })
     }
   }, [user])
-
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -31,7 +27,6 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
         alert('Passwords do not match')
         return
       }
-
       if (!user) {
         alert('User data is not available')
         return
@@ -50,7 +45,6 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
       alert('Update failed. Please try again.')
     }
   }
-
   return (
     <div className="col register">
       <form onSubmit={handleSubmit}>
@@ -97,5 +91,4 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
     </div>
   )
 }
-
 export default EditProfile

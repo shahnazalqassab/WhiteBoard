@@ -17,13 +17,13 @@ const CourseList = ({ courses, onEdit, onDelete, onView, user }) => {
                 <p>Instructor: {course.owner?.name || 'Unknown'}</p>
                 <p>Course description{course.description}</p>
               </div>
-              
+
               {user && user._id === course.owner?._id && (
                 <div className="course-actions">
                   <button onClick={() => navigate(`/courses/${course._id}`)}>
                     Edit
                   </button>
-                  <button onClick={(event) => {event.stopPropagation(), onDelete(course._id)}}>
+                  <button onClick={(event) => { event.stopPropagation(), onDelete(course._id) }}>
                     Delete
                   </button>
                 </div>

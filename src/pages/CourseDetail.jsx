@@ -87,7 +87,8 @@ const CourseDetail = ({ user }) => {
       <button onClick={() => navigate('/courses')}>Back to Courses</button>
       <h1>{course.name}</h1>
       <p>Instructor: {course.owner?.name || 'Unknown'}</p>
-
+      <p>Description: {course.description || 'No description provided.'}</p>
+      
       {course.lessons && course.lessons.length > 0 ? (
         course.lessons.map((lesson, id) => (
           <div className="lesson-section" key={id}>

@@ -24,9 +24,7 @@ export const GetCourseById = async (id) => {
 
 export const CreateCourse = async (courseData) => {
   try {
-    const response = await Client.post(
-      '/courses',
-      courseData,
+    const response = await Client.post('/courses', courseData,
       {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -30,7 +30,6 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
       alert('Passwords do not match')
       return
     }
-
     if (!user) {
       alert('User data is not available')
       return

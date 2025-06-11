@@ -10,19 +10,19 @@ const CourseEdit = ({ user }) => {
   const [course, setCourse] = useState({
     name: '',
     owner: '',
-    lessons: []
+    description: '',
   })
   const [showLessonModal, setShowLessonModal] = useState(false)
   const [showAssignmentModal, setShowAssignmentModal] = useState(false)
   const [currentLessonIndex, setCurrentLessonIndex] = useState(null)
   const [newLesson, setNewLesson] = useState({
     title: '',
-    material: '',
+    description: '',
     assignments: []
   })
   const [newAssignment, setNewAssignment] = useState({
     title: '',
-    material: '',
+    description: '',
     document: ''
   })
 
@@ -102,6 +102,7 @@ const CourseEdit = ({ user }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      console.log(course)
       await UpdateCourse(id, course)
       navigate(`/courses/${id}`)
     } catch (err) {
@@ -122,7 +123,12 @@ const CourseEdit = ({ user }) => {
             type="text"
             name="name"
             value={course.name}
-            onChange={e => setCourse(prev => ({ ...prev, name: e.target.value }))}
+            onChange={event => setCourse(prev => ({ ...prev, name: event.target.value }))}
+            required
+          />
+          <label>Description:</label>
+          <textarea name="description" value={course.description}
+            onChange={event => setCourse(prev => ({ ...prev, description: event.target.value }))}
             required
           />
         </div>

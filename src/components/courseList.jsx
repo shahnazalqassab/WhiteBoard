@@ -15,7 +15,7 @@ const CourseList = ({ courses, onEdit, onDelete, onView, user }) => {
               <div onClick={() => onView(course._id)} className="course-info">
                 <h3>{course.name}</h3>
                 <p>Instructor: {course.owner?.name || 'Unknown'}</p>
-                <p>Course description{course.description}</p>
+                <p>Course description: {course.description}</p>
               </div>
 
               {user && user._id === course.owner?._id && (

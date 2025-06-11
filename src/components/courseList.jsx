@@ -20,7 +20,7 @@ const CourseList = ({ courses, onEdit, onDelete, onView, user }) => {
 
               {user && user._id === course.owner?._id && (
                 <div className="course-actions">
-                  <button onClick={() => navigate(`/courses/${course._id}`)}>
+                  <button onClick={onEdit ? () => onEdit(course._id) : null}>
                     Edit
                   </button>
                   <button onClick={(event) => { event.stopPropagation(), onDelete(course._id) }}>

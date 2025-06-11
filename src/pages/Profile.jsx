@@ -20,6 +20,7 @@ const Profile = ({ user, setUser }) => {
   return (
     <div className="courses-page">
       <h1>Profile</h1>
+      <h1>hi</h1>
       {!isEditing ? (
         <div className="col register">
           <p>Name: {user.name}</p>

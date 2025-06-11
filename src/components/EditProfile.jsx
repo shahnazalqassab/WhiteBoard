@@ -32,11 +32,11 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
         return
       }
       const updatedUser = await updateUserProfile({
-        _id: user._id,
-        name: formValues.name,
-        email: formValues.email,
-        password: formValues.password
-      })
+    _id: user._id,
+    name: formValues.name,
+    email: formValues.email,
+    ...(formValues.password && { password: formValues.password })
+  })
       onUpdateSuccess(updatedUser)
       console.log(user)
       alert('Profile updated successfully!')

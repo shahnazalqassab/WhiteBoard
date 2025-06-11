@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { updateUserProfile } from '../services/User'
-
 const EditProfile = ({ user, onUpdateSuccess }) => {
   const [formValues, setFormValues] = useState({
     name: '',
@@ -8,7 +7,6 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
     password: '',
     confirmPassword: ''
   })
-
   useEffect(() => {
     if (user) {
       setFormValues({
@@ -19,37 +17,32 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
       })
     }
   }, [user])
-
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (formValues.password !== formValues.confirmPassword) {
-      alert('Passwords do not match')
-      return
-    }
-
-    if (!user) {
-      alert('User data is not available')
-      return
-    }
-
     try {
-      await updateUserProfile({
+      if (formValues.password !== formValues.confirmPassword) {
+        alert('Passwords do not match')
+        return
+      }
+      if (!user) {
+        alert('User data is not available')
+        return
+      }
+      const updatedUser = await updateUserProfile({
         _id: user._id,
         name: formValues.name,
         email: formValues.email,
         password: formValues.password
       })
+      onUpdateSuccess(updatedUser) // Pass updated user to parent
       alert('Profile updated successfully!')
-      onUpdateSuccess()
     } catch (error) {
       alert('Update failed. Please try again.')
     }
   }
-
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -94,5 +87,4 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
     </form>
   )
 }
-
 export default EditProfile

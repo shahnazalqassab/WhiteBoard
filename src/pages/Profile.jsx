@@ -13,16 +13,15 @@ const Profile = ({ user, setUser }) => {
   }
 
   const handleUpdateSuccess = (updatedUser) => {
-    setUser(updatedUser)
+    setUser()
     setIsEditing(false)
   }
 
   return (
     <div className="courses-page">
       <h1>Profile</h1>
-      <h1>hi</h1>
       {!isEditing ? (
-        <div className="col register">
+        <div>
           <p>Name: {user.name}</p>
           <p>Email: {user.email}</p>
           <p>Password: {user.password}</p>

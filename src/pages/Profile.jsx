@@ -32,8 +32,8 @@ const Profile = ({ user, setUser }) => {
           </button>
         </div>
       ) : (
-        <EditProfile user={user} onUpdateSuccess={handleUpdateSuccess} />
-      )}
+      <EditProfile user={user} onUpdateSuccess={handleUpdateSuccess} onCancel={() => setIsEditing(false)} />      )}
+      
       <div className="col register">
           <h2>Enrollments</h2>
           <p>Name: {user.name}</p>

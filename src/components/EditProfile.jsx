@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { updateUserProfile } from '../services/User'
+import { useNavigate } from 'react-router-dom'
 
 
-const EditProfile = ({ user, onUpdateSuccess }) => {
+const EditProfile = ({ user, onUpdateSuccess, onCancel }) => {
+  const navigate = useNavigate()
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
@@ -48,7 +50,6 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
 
 
         onUpdateSuccess(updatedUser)
-        console.log(user)
         alert('Profile updated successfully!')
       } catch (error) {
         console.log(error)
@@ -56,14 +57,6 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
       }
     }
 
-    const handleCancel = () => {
-      setFormValues({
-        name: user.name || '',
-        email: user.email || '',
-        password: '',
-        confirmPassword: ''
-      })
-    }
 
   return (
     <div className="col register">
@@ -107,7 +100,7 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
           />
         </div>
         <button type="submit">Update Profile</button>
-        <button type="cancel" onClick={handleCancel}>Cancel</button>
+        <button type="button" onClick={onCancel}>Cancel</button>
 
       </form>
     </div>

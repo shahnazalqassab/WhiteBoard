@@ -22,23 +22,23 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (formValues.password !== formValues.confirmPassword) {
-      alert('Passwords do not match')
-      return
-    }
-
-    if (!user) {
-      alert('User data is not available')
-      return
-    }
-
     try {
-      await updateUserProfile({
+      if (formValues.password !== formValues.confirmPassword) {
+        alert('Passwords do not match')
+        return
+      }
+      if (!user) {
+        alert('User data is not available')
+        return
+      }
+      const updatedUser = await updateUserProfile({
         _id: user._id,
         name: formValues.name,
         email: formValues.email,
         password: formValues.password
       })
+      onUpdateSuccess(updatedUser)
+      console.log(user)
       alert('Profile updated successfully!')
     } catch (error) {
       console.log(error)

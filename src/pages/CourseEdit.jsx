@@ -30,8 +30,6 @@ const CourseEdit = ({ user }) => {
             try {
                 const [courseData, usersResponse] = await Promise.all([
                     GetCourseById(id),
-                    // FIXED: use correct endpoint
-                    // axios.get('/api/users')
                     axios.get('/user')
                 ])
 

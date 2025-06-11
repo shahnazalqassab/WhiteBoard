@@ -2,17 +2,20 @@ import { useState, useEffect } from 'react'
 
 const CourseForm = ({ course, onSubmit, onCancel, user }) => {
   const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
 
   useEffect(() => {
     if (course) {
       setName(course.name)
+      setDescription(course.description)
     }
   }, [course])
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log('user:', user)
-    onSubmit({ name, owner: user?._id || '' })
+    console.log('Submitting course:', { name, description, owner: user?._id || '' })
+    
+    onSubmit({ name, description, owner: user?._id || '' })
   }
 
   return (
@@ -23,6 +26,11 @@ const CourseForm = ({ course, onSubmit, onCancel, user }) => {
           <label>Course Name:</label>
           <input type="text" name="name" value={name}
             onChange={event => setName(event.target.value)}
+            required
+          />
+          <label>Description:</label>
+          <textarea name="description" value={description}
+            onChange={event => setDescription(event.target.value)}
             required
           />
         </div>

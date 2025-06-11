@@ -102,6 +102,7 @@ const CourseEdit = ({ user }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      console.log(course)
       await UpdateCourse(id, course)
       navigate(`/courses/${id}`)
     } catch (err) {
@@ -127,7 +128,7 @@ const CourseEdit = ({ user }) => {
           />
           <label>Description:</label>
           <textarea name="description" value={course.description}
-            onChange={event => setDescription(prev => ({ ...prev, description: event.target.value }))}
+            onChange={event => setCourse(prev => ({ ...prev, description: event.target.value }))}
             required
           />
         </div>

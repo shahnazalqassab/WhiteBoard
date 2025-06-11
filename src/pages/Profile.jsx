@@ -12,7 +12,6 @@ const Profile = ({ user, setUser }) => {
     setIsEditing(true)
   }
 
-  // Accept the updated user and update the parent state
   const handleUpdateSuccess = (updatedUser) => {
     setUser(updatedUser)
     setIsEditing(false)
@@ -22,7 +21,7 @@ const Profile = ({ user, setUser }) => {
     <div className="courses-page">
       <h1>Profile</h1>
       {!isEditing ? (
-        <div>
+        <div className="col register">
           <p>Name: {user.name}</p>
           <p>Email: {user.email}</p>
           <p>Category: {user.category}</p>

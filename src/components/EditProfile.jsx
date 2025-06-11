@@ -26,72 +26,75 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (formValues.password !== formValues.confirmPassword) {
-      alert('Passwords do not match')
-      return
-    }
-
-    if (!user) {
-      alert('User data is not available')
-      return
-    }
-
     try {
-      await updateUserProfile({
+      if (formValues.password !== formValues.confirmPassword) {
+        alert('Passwords do not match')
+        return
+      }
+
+      if (!user) {
+        alert('User data is not available')
+        return
+      }
+      const updatedUser = await updateUserProfile({
         _id: user._id,
         name: formValues.name,
         email: formValues.email,
         password: formValues.password
       })
+      onUpdateSuccess(updatedUser)
+      console.log(user)
       alert('Profile updated successfully!')
-      onUpdateSuccess()
     } catch (error) {
+      console.log(error)
       alert('Update failed. Please try again.')
     }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Name</label>
-        <input
-          type="text"
-          id="name"
-          value={formValues.name}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Email</label>
-        <input
-          type="email"
-          id="email"
-          value={formValues.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Password</label>
-        <input
-          type="password"
-          id="password"
-          value={formValues.password}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          value={formValues.confirmPassword}
-          onChange={handleChange}
-        />
-      </div>
-      <button type="submit">Update Profile</button>
-    </form>
+    <div className="col register">
+      <form onSubmit={handleSubmit}>
+        <div className="input-wrapper">
+          <label>Name</label>
+          <input
+            type="text"
+            id="name"
+            value={formValues.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="input-wrapper">
+          <label>Email</label>
+          <input
+            type="email"
+            id="email"
+            value={formValues.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="input-wrapper">
+          <label>Password</label>
+          <input
+            type="password"
+            id="password"
+            value={formValues.password}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="input-wrapper">
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            value={formValues.confirmPassword}
+            onChange={handleChange}
+          />
+        </div>
+        <button type="submit">Update Profile</button>
+      </form>
+    </div>
   )
 }
 

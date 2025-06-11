@@ -21,7 +21,10 @@ export const SignInUser = async (data) => {
 
 export const updateUserProfile = async (data) => {
     const res = await Client.put('/user/profile', data)
-  return res.data
+    if (res.data.token) {
+    localStorage.setItem('token', res.data.token)
+  }
+  return res.data.user || res.data
 }
 
 export const CheckSession = async () => {

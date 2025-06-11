@@ -66,7 +66,7 @@ const LessonAdd = () => {
                     />
                 </div>
                 <div>
-                    <label>Lesson Material (PDF):</label>
+                    <label>Lesson Description (PDF):</label>
                     <input
                         type="file"
                         accept="application/pdf"

@@ -94,8 +94,8 @@ const CourseDetail = ({ user }) => {
           <div className="lesson-section" key={id}>
             <h2>Lesson: {lesson.title}</h2>
             <div className="lesson-material">
-              <h3>Material:</h3>
-              <a href={lesson.material} target="_blank" rel="noopener noreferrer">
+              <h3>Description:</h3>
+              <a href={lesson.description} target="_blank" rel="noopener noreferrer">
                 View Lesson Material
               </a>
             </div>
@@ -103,7 +103,7 @@ const CourseDetail = ({ user }) => {
               lesson.assignments.map((assignment, aIdx) => (
                 <div className="assignment" key={aIdx}>
                   <h3>Assignment: {assignment.title}</h3>
-                  <div>{assignment.material}</div>
+                  <div>{assignment.description}</div>
                   {assignment.document && (
                     <a
                       className="button-document"
@@ -217,6 +217,10 @@ const CourseDetail = ({ user }) => {
               value={newLesson.title}
               onChange={e => setNewLesson(prev => ({ ...prev, title: e.target.value }))}
               required
+            />
+            <textarea placeholder="description" value={newLesson.description}
+            onChange={event => setNewLesson(prev => ({ ...prev, description: event.target.value }))}
+            required
             />
             <input
               type="file"

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { updateUserProfile } from '../services/User'
+
+
 const EditProfile = ({ user, onUpdateSuccess }) => {
   const [formValues, setFormValues] = useState({
     name: '',
@@ -7,8 +9,54 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
     password: '',
     confirmPassword: ''
   })
-  useEffect(() => {
-    if (user) {
+
+
+    useEffect(() => {
+      if (user) {
+        setFormValues({
+          name: user.name || '',
+          email: user.email || '',
+          password: '',
+          confirmPassword: ''
+        })
+      }
+    }, [user])
+
+
+    const handleChange = (event) => {
+      setFormValues({ ...formValues, [event.target.id]: event.target.value })
+    }
+
+    const handleSubmit = async (event) => {
+      event.preventDefault()
+      try {
+        if (formValues.password !== formValues.confirmPassword) {
+          alert('Passwords do not match')
+          return
+        }
+        if (!user) {
+          alert('User data is not available')
+          return
+        }
+
+          const updatedUser = await updateUserProfile({
+          _id: user._id,
+          name: formValues.name,
+          email: formValues.email,
+          ...(formValues.password && { password: formValues.password })
+          })
+
+
+        onUpdateSuccess(updatedUser)
+        console.log(user)
+        alert('Profile updated successfully!')
+      } catch (error) {
+        console.log(error)
+        alert('Update failed. Please try again.')
+      }
+    }
+
+    const handleCancel = () => {
       setFormValues({
         name: user.name || '',
         email: user.email || '',
@@ -16,35 +64,7 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
         confirmPassword: ''
       })
     }
-  }, [user])
-  const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.id]: e.target.value })
-  }
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      if (formValues.password !== formValues.confirmPassword) {
-        alert('Passwords do not match')
-        return
-      }
-      if (!user) {
-        alert('User data is not available')
-        return
-      }
-      const updatedUser = await updateUserProfile({
-    _id: user._id,
-    name: formValues.name,
-    email: formValues.email,
-    ...(formValues.password && { password: formValues.password })
-  })
-      onUpdateSuccess(updatedUser)
-      console.log(user)
-      alert('Profile updated successfully!')
-    } catch (error) {
-      console.log(error)
-      alert('Update failed. Please try again.')
-    }
-  }
+
   return (
     <div className="col register">
       <form onSubmit={handleSubmit}>
@@ -87,6 +107,8 @@ const EditProfile = ({ user, onUpdateSuccess }) => {
           />
         </div>
         <button type="submit">Update Profile</button>
+        <button type="cancel" onClick={handleCancel}>Cancel</button>
+
       </form>
     </div>
   )

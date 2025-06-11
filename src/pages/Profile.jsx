@@ -18,10 +18,12 @@ const Profile = ({ user, setUser }) => {
   }
 
   return (
-    <div className="courses-page">
+    <div className="profile-page">
       <h1>Profile</h1>
+      <div className="profile-content">
       {!isEditing ? (
         <div className="col register">
+          <h2>User Details</h2>
           <p>Name: {user.name}</p>
           <p>Email: {user.email}</p>
           <p>Category: {user.category}</p>
@@ -32,6 +34,16 @@ const Profile = ({ user, setUser }) => {
       ) : (
         <EditProfile user={user} onUpdateSuccess={handleUpdateSuccess} />
       )}
+      <div className="col register">
+          <h2>Enrollments</h2>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
+          <p>Category: {user.category}</p>
+          <button className="button-primary" onClick={handleEditClick}>
+            Edit Profile
+          </button>
+        </div>
+        </div>
     </div>
   )
 }

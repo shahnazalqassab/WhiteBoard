@@ -113,6 +113,28 @@ export const EnrollInCourse = async (courseId) => {
   }
 }
 
+export const enrollmentAccepted = async (courseId, studentId) => {
+  try {
+    const response = await Client.post(
+      `/courses/${courseId}/enroll/${studentId}/accept`,
+      { studentId })
+} catch (error) {
+    console.error(`Error accepting enrollment for course with id ${courseId} and student id ${studentId}:`, error)
+    throw error
+  }
+}
+
+export const enrollmentRejected = async (courseId, studentId) => {
+  try {
+    const response = await Client.post(
+      `/courses/${courseId}/enroll/${studentId}/reject`,
+      { studentId })
+} catch (error) {
+    console.error(`Error rejecting enrollment for course with id ${courseId} and student id ${studentId}:`, error)
+    throw error
+  }
+}
+
 
 export const UnenrollFromCourse = async (courseId) => {
   try {

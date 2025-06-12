@@ -59,7 +59,7 @@ const EditProfile = ({ user, onUpdateSuccess, onCancel }) => {
 
 
   return (
-    <div className="col register">
+    <div className="col profile">
       <form onSubmit={handleSubmit}>
         <div className="input-wrapper">
           <label>Name</label>

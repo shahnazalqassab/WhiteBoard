@@ -500,6 +500,7 @@ button:disabled {
 .profile-page .profile-content {
   display: flex;
   flex-direction: row;
+  gap: 2rem;
 
 }
 .profile-page h1 {
@@ -532,16 +533,16 @@ button:disabled {
   transform: translateY(-2px) scale(1.04);
 }
 
-.col.register {
-  max-width: 400px;
-  margin: 2rem auto;
+.col.profile {
+  margin: 2px auto;
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(34, 160, 244, 0.12);
   padding: 2.5rem 2rem;
+  width: 90%;
 }
 
-.col.register h1 {
+.col.profile h1 {
   margin-bottom: 1.5rem;
   color: #22a0f4;
   font-size: 2rem;

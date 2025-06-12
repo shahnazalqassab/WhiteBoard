@@ -1,11 +1,10 @@
 import Client from "./api";
 
-// const API_URL = process.env.MONGODB_URI;
 
 export const GetCourses = async () => {
   try {
     const response = await Client.get('/courses')
-    return  response.data
+    return response.data
   } catch (error) {
     console.error('Error fetching courses:', error)
     throw error

@@ -5,13 +5,15 @@ import { GetCourseById, DeleteCourse, UpdateCourse, EnrollInCourse } from '../se
 const CourseDetail = ({ user }) => {
   const { id } = useParams()
   const navigate = useNavigate()
+
   const [course, setCourse] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
   const [showLessonModal, setShowLessonModal] = useState(false)
-  const [newLesson, setNewLesson] = useState({ title: '', material: '', assignments: [] })
+  const [newLesson, setNewLesson] = useState({ title: '', description: '', material: '', assignment: null })
   const [showAssignmentForm, setShowAssignmentForm] = useState(false)
-  const [newAssignment, setNewAssignment] = useState({ title: '', material: '', document: '' })
+  const [newAssignment, setNewAssignment] = useState({ title: '', description: '', document: '' })
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -35,10 +37,10 @@ const CourseDetail = ({ user }) => {
   }
 
   const openLessonModal = () => {
-    setNewLesson({ title: '', material: '', assignments: [] })
+    setNewLesson({ title: '', description: '', material: '', assignment: null })
     setShowLessonModal(true)
     setShowAssignmentForm(false)
-    setNewAssignment({ title: '', material: '', document: '' })
+    setNewAssignment({ title: '', description: '', document: '' })
   }
 
   const closeLessonModal = () => setShowLessonModal(false)
@@ -46,26 +48,46 @@ const CourseDetail = ({ user }) => {
   const addAssignmentToLesson = () => {
     setNewLesson(prev => ({
       ...prev,
-      assignments: [...(prev.assignments || []), newAssignment]
+      assignment: {
+        title: newAssignment.title || '',
+        description: newAssignment.description || '',
+        document: newAssignment.document || ''
+      }
     }))
     setShowAssignmentForm(false)
-    setNewAssignment({ title: '', material: '', document: '' })
+    setNewAssignment({ title: '', description: '', document: '' })
   }
 
   const addLesson = async () => {
     try {
-      const updatedLessons = [...(course.lessons || []), newLesson]
-      await UpdateCourse(id, { ...course, lessons: updatedLessons })
+      let assignment = newLesson.assignment
+
+      if (showAssignmentForm && (newAssignment.title || newAssignment.description || newAssignment.document)) {
+        assignment = {
+          title: newAssignment.title,
+          description: newAssignment.description,
+          document: newAssignment.document
+        }
+      }
+
+      const lessonToAdd = {
+        title: newLesson.title,
+        description: newLesson.description || '',
+        material: newLesson.material || '',
+        assignment: assignment || undefined
+      }
+
+      const updatedLessons = [...(course.lessons || []), lessonToAdd]
       setCourse(prev => ({ ...prev, lessons: updatedLessons }))
       setShowLessonModal(false)
+
+      await UpdateCourse(id, { ...course, lessons: updatedLessons })
     } catch (err) {
       setError(err.message)
     }
   }
 
-  const handleEdit = () => {
-    navigate(`/courses/edit/${course._id}`)
-  }
+  const handleEdit = () => navigate(`/courses/edit/${course._id}`)
 
   // const handleDelete = async () => {
   //   if (window.confirm('Are you sure you want to delete this course?')) {
@@ -92,37 +114,40 @@ const CourseDetail = ({ user }) => {
       <button onClick={() => navigate('/courses')}>Back to Courses</button>
       <h1>{course.name}</h1>
       <p>Instructor: {course.owner?.name || 'Unknown'}</p>
-      <p>Description: {course.description || 'No description provided.'}</p>
-      
-      {course.lessons && course.lessons.length > 0 ? (
+      <p>Description: {course.description}</p>
+
+      {course.lessons?.length > 0 ? (
         course.lessons.map((lesson, id) => (
           <div className="lesson-section" key={id}>
             <h2>Lesson: {lesson.title}</h2>
             <div className="lesson-material">
               <h3>Description:</h3>
-              <a href={lesson.description} target="_blank" rel="noopener noreferrer">
-                View Lesson Material
-              </a>
+              <div>{lesson.description}</div>
+              {lesson.material && (
+                <a href={lesson.material} target="_blank" rel="noopener noreferrer">
+                  View Lesson Material
+                </a>
+              )}
             </div>
-            {lesson.assignments && lesson.assignments.length > 0 ? (
-              lesson.assignments.map((assignment, aIdx) => (
-                <div className="assignment" key={aIdx}>
-                  <h3>Assignment: {assignment.title}</h3>
-                  <div>{assignment.description}</div>
-                  {assignment.document && (
-                    <a className="button-document" href={assignment.document} target="_blank" rel="noopener noreferrer">
-                      View Assignment Document
-                    </a>
-                  )}
-                </div>
-              ))
-            ) : ( <div>No assignments for this lesson.</div> )}
+
+            {lesson.assignment ? (
+              <div className="assignment">
+                <h3>Assignment: {lesson.assignment.title}</h3>
+                <div>{lesson.assignment.description}</div>
+                {lesson.assignment.document && (
+                  <a className="button-document" href={lesson.assignment.document} target="_blank" rel="noopener noreferrer">
+                    View Assignment Document
+                  </a>
+                )}
+              </div>
+            ) : (
+              <div>No assignments for this lesson.</div>
+            )}
+
           </div>
         ))
       ) : (
-        <div className="lessons-message">
-          No lessons have been added to this course yet.
-        </div>
+        <div className="lessons-message">No lessons have been added to this course yet.</div>
       )}
 
       {user && user._id === course.owner?._id && (
@@ -152,82 +177,106 @@ const CourseDetail = ({ user }) => {
 
       {showLessonModal && (
         <div className="modal">
-          <div className="modal-content">
-            <h4>Add Lesson</h4>
-            <input
-              type="text"
-              placeholder="Lesson Title"
-              value={newLesson.title}
-              onChange={e => setNewLesson(prev => ({ ...prev, title: e.target.value }))}
-              required
-            />
-            <textarea placeholder="description" value={newLesson.description}
-            onChange={event => setNewLesson(prev => ({ ...prev, description: event.target.value }))}
-            required
-            />
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={e => handleFileUpload(e, url => setNewLesson(prev => ({ ...prev, material: url })))}
-              required
-            />
-            {newLesson.material && (
-              <a href={newLesson.material} target="_blank" rel="noopener noreferrer">
-                Preview Lesson Material
-              </a>
-            )}
-            <div>
-              <button type="button" onClick={() => setShowAssignmentForm(!showAssignmentForm)}>
-                {showAssignmentForm ? 'Cancel Assignment' : 'Add Assignment'}
-              </button>
-              {showAssignmentForm && (
-                <div className="assignment-form">
-                  <input
-                    type="text"
-                    placeholder="Assignment Title"
-                    value={newAssignment.title}
-                    onChange={e => setNewAssignment(prev => ({ ...prev, title: e.target.value }))}
-                  />
-                  <textarea
-                    placeholder="Assignment Description"
-                    value={newAssignment.material}
-                    onChange={e => setNewAssignment(prev => ({ ...prev, material: e.target.value }))}
-                  />
-                  <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={e => handleFileUpload(e, url => setNewAssignment(prev => ({ ...prev, document: url })))}
-                  />
-                  {newAssignment.document && (
-                    <a href={newAssignment.document} target="_blank" rel="noopener noreferrer">
-                      Preview Document
-                    </a>
-                  )}
-                  <button
-                    type="button"
-                    onClick={addAssignmentToLesson}
-                    disabled={!newAssignment.title || !newAssignment.material}
-                  >
-                    Add Assignment to Lesson
-                  </button>
-                </div>
-              )}
-              {newLesson.assignments && newLesson.assignments.length > 0 && (
-                <ul>
-                  {newLesson.assignments.map((a, idx) => (
-                    <li key={idx}>{a.title}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <button
-              type="button"
-              onClick={addLesson}
-              disabled={!newLesson.title || !newLesson.material}
-            >
-              Add Lesson
-            </button>
-            <button type="button" onClick={closeLessonModal}>Cancel</button>
+          <div className="modal-content course-form" style={{ maxWidth: 430 }}>
+            <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Add Lesson</h2>
+            <form>
+              <div className="form-group">
+                <label>Lesson Title:</label>
+                <input
+                  type="text"
+                  value={newLesson.title}
+                  onChange={e => setNewLesson(prev => ({ ...prev, title: e.target.value }))}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Lesson Description:</label>
+                <textarea
+                  value={newLesson.description}
+                  onChange={e => setNewLesson(prev => ({ ...prev, description: e.target.value }))}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Lesson Material (PDF):</label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={e => handleFileUpload(e, url => setNewLesson(prev => ({ ...prev, material: url })))}
+                />
+                {newLesson.material && (
+                  <a href={newLesson.material} target="_blank" rel="noopener noreferrer">
+                    Preview Lesson Material
+                  </a>
+                )}
+              </div>
+              <div className="assignments-section" style={{ marginTop: 12 }}>
+                <h5>Assignment</h5>
+                <button
+                  type="button"
+                  onClick={() => setShowAssignmentForm(!showAssignmentForm)}
+                  style={{ marginBottom: 8 }}
+                  disabled={!!newLesson.assignment}
+                >
+                  {showAssignmentForm
+                    ? 'Cancel Assignment'
+                    : newLesson.assignment
+                      ? 'Assignment Added'
+                      : 'Add Assignment'}
+                </button>
+                {showAssignmentForm && (
+                  <div className="assignment-form" style={{ marginTop: 8 }}>
+                    <div className="form-group">
+                      <label>Assignment Title:</label>
+                      <input
+                        type="text"
+                        value={newAssignment.title}
+                        onChange={e => setNewAssignment(prev => ({ ...prev, title: e.target.value }))}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Assignment Description:</label>
+                      <textarea
+                        value={newAssignment.description}
+                        onChange={e => setNewAssignment(prev => ({ ...prev, description: e.target.value }))}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Assignment Document (PDF):</label>
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={e => handleFileUpload(e, url => setNewAssignment(prev => ({ ...prev, document: url })))}
+                      />
+                      {newAssignment.document && (
+                        <a href={newAssignment.document} target="_blank" rel="noopener noreferrer">
+                          Preview Document
+                        </a>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addAssignmentToLesson}
+                      disabled={!newAssignment.title || !newAssignment.description}
+                      style={{ marginTop: 8 }}
+                    >
+                      Add Assignment to Lesson
+                    </button>
+                  </div>
+                )}
+                {newLesson.assignment && <ul><li>{newLesson.assignment.title}</li></ul>}
+              </div>
+              <div className="form-actions" style={{ marginTop: 16 }}>
+                <button type="button" onClick={addLesson} disabled={!newLesson.title}>
+                  Add Lesson
+                </button>
+                <button type="button" onClick={closeLessonModal} style={{ marginLeft: 8 }}>
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

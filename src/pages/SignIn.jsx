@@ -18,12 +18,19 @@ const SignIn = ({ setUser }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    
+    try {
     const payload = await SignInUser(formValues)
+      if (!payload) {
+        alert('Invalid username or password')
+        return
+      }
     setFormValues(initialState)
     setUser(payload)
     navigate('/courses')
+  } catch (error) {
+    alert(error.response.data.msg)
   }
+}
 
   return (
     <div className="col signin">

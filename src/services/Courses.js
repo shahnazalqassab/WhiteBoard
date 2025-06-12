@@ -33,6 +33,16 @@ export const GetCoursesByOwner = async (ownerId) => {
   }
 
 
+  export const GetCoursesByStudent = async (studentId) => {
+  try {
+    const response = await Client.get(`/courses/student/${studentId}`)
+    return Array.isArray(response.data) ? response.data : []
+    } catch (error) {
+    console.error(`Error fetching courses for student with id ${studentId}:`, error)
+    return [] 
+    }
+  }
+
 export const CreateCourse = async (courseData) => {
   try {
     const response = await Client.post('/courses', courseData,

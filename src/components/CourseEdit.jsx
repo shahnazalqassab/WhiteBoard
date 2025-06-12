@@ -11,19 +11,7 @@ const CourseEdit = ({ user }) => {
     name: '',
     owner: '',
     description: '',
-  })
-  const [showLessonModal, setShowLessonModal] = useState(false)
-  const [showAssignmentModal, setShowAssignmentModal] = useState(false)
-  const [currentLessonIndex, setCurrentLessonIndex] = useState(null)
-  const [newLesson, setNewLesson] = useState({
-    title: '',
-    description: '',
-    assignments: []
-  })
-  const [newAssignment, setNewAssignment] = useState({
-    title: '',
-    description: '',
-    document: ''
+    lessons: []
   })
 
   useEffect(() => {
@@ -46,55 +34,59 @@ const CourseEdit = ({ user }) => {
   const handleFileUpload = async (e, cb) => {
     const file = e.target.files[0]
     if (!file) return
-
     const fakeUrl = URL.createObjectURL(file)
     cb(fakeUrl)
   }
 
-  // Lesson Modal Handlers
-  const openLessonModal = () => {
-    setNewLesson({ title: '', material: '', assignments: [] })
-    setShowLessonModal(true)
+  // Lesson handlers
+  const handleLessonChange = (idx, field, value) => {
+    setCourse(prev => {
+      const lessons = [...prev.lessons]
+      lessons[idx] = { ...lessons[idx], [field]: value }
+      return { ...prev, lessons }
+    })
   }
-  const closeLessonModal = () => setShowLessonModal(false)
+
   const addLesson = () => {
     setCourse(prev => ({
       ...prev,
-      lessons: [...prev.lessons, newLesson]
-    }))
-    setShowLessonModal(false)
-  }
-
-  // Assignment Modal Handlers
-  const openAssignmentModal = (lessonIdx) => {
-    setCurrentLessonIndex(lessonIdx)
-    setNewAssignment({ title: '', material: '', document: '' })
-    setShowAssignmentModal(true)
-  }
-  const closeAssignmentModal = () => setShowAssignmentModal(false)
-  const addAssignment = () => {
-    setCourse(prev => {
-      const lessons = [...prev.lessons]
-      lessons[currentLessonIndex].assignments = [
-        ...(lessons[currentLessonIndex].assignments || []),
-        newAssignment
+      lessons: [
+        ...prev.lessons,
+        { title: '', description: '', material: '', assignment: null }
       ]
-      return { ...prev, lessons }
-    })
-    setShowAssignmentModal(false)
+    }))
   }
 
-  const removeLesson = (index) => {
+  const removeLesson = (idx) => {
     setCourse(prev => ({
       ...prev,
-      lessons: prev.lessons.filter((_, i) => i !== index)
+      lessons: prev.lessons.filter((_, i) => i !== idx)
     }))
   }
 
-  const removeAssignment = (lessonIdx, assignmentIdx) => {
+  // Assignment handlers (single assignment per lesson)
+  const handleAssignmentChange = (lIdx, field, value) => {
     setCourse(prev => {
       const lessons = [...prev.lessons]
-      lessons[lessonIdx].assignments = lessons[lessonIdx].assignments.filter((_, i) => i !== assignmentIdx)
+      const assignment = { ...(lessons[lIdx].assignment || { title: '', description: '', document: '' }) }
+      assignment[field] = value
+      lessons[lIdx] = { ...lessons[lIdx], assignment }
+      return { ...prev, lessons }
+    })
+  }
+
+  const addAssignment = (lIdx) => {
+    setCourse(prev => {
+      const lessons = [...prev.lessons]
+      lessons[lIdx].assignment = { title: '', description: '', document: '' }
+      return { ...prev, lessons }
+    })
+  }
+
+  const removeAssignment = (lIdx) => {
+    setCourse(prev => {
+      const lessons = [...prev.lessons]
+      lessons[lIdx].assignment = null
       return { ...prev, lessons }
     })
   }
@@ -102,7 +94,6 @@ const CourseEdit = ({ user }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      console.log(course)
       await UpdateCourse(id, course)
       navigate(`/courses/${id}`)
     } catch (err) {
@@ -127,35 +118,80 @@ const CourseEdit = ({ user }) => {
             required
           />
           <label>Description:</label>
-          <textarea name="description" value={course.description}
+          <textarea
+            name="description"
+            value={course.description}
             onChange={event => setCourse(prev => ({ ...prev, description: event.target.value }))}
             required
           />
-        </div>
-        <div className="form-group">
-      
         </div>
 
         <div className="lessons-section">
           <h3>Lessons</h3>
           {course.lessons.map((lesson, lIdx) => (
-            <div key={lIdx} className="lesson-item">
-              <h4>{lesson.title}</h4>
-              <a href={lesson.material} target="_blank" rel="noopener noreferrer">View Lesson Material</a>
-              <button type="button" onClick={() => removeLesson(lIdx)}>Remove Lesson</button>
-              <h5>Assignments</h5>
-              {(lesson.assignments || []).map((assignment, aIdx) => (
-                <div key={aIdx} className="assignment-item">
-                  <strong>{assignment.title}</strong>
-                  <a href={assignment.material} target="_blank" rel="noopener noreferrer">View Assignment Material</a>
-                  <a href={assignment.document} target="_blank" rel="noopener noreferrer">View Document</a>
-                  <button type="button" onClick={() => removeAssignment(lIdx, aIdx)}>Remove Assignment</button>
-                </div>
-              ))}
-              <button type="button" onClick={() => openAssignmentModal(lIdx)}>Add Assignment</button>
+            <div key={lIdx} className="lesson-item" style={{ border: '1px solid #ccc', marginBottom: 16, padding: 8 }}>
+              <label>Lesson Title:</label>
+              <input
+                type="text"
+                value={lesson.title}
+                onChange={e => handleLessonChange(lIdx, 'title', e.target.value)}
+                required
+              />
+              <label>Lesson Description:</label>
+              <textarea
+                value={lesson.description}
+                onChange={e => handleLessonChange(lIdx, 'description', e.target.value)}
+                required
+              />
+              <label>Lesson Material (PDF):</label>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={e => handleFileUpload(e, url => handleLessonChange(lIdx, 'material', url))}
+              />
+              {lesson.material && (
+                <a href={lesson.material} target="_blank" rel="noopener noreferrer">
+                  Preview Lesson Material
+                </a>
+              )}
+              <button type="button" onClick={() => removeLesson(lIdx)} style={{ marginLeft: 8 }}>Remove Lesson</button>
+              <div className="assignments-section" style={{ marginTop: 12 }}>
+                <h5>Assignment</h5>
+                {lesson.assignment ? (
+                  <div className="assignment-item" style={{ marginBottom: 8 }}>
+                    <label>Assignment Title:</label>
+                    <input
+                      type="text"
+                      value={lesson.assignment.title}
+                      onChange={e => handleAssignmentChange(lIdx, 'title', e.target.value)}
+                      required
+                    />
+                    <label>Assignment Description:</label>
+                    <textarea
+                      value={lesson.assignment.description}
+                      onChange={e => handleAssignmentChange(lIdx, 'description', e.target.value)}
+                      required
+                    />
+                    <label>Assignment Document (PDF):</label>
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      onChange={e => handleFileUpload(e, url => handleAssignmentChange(lIdx, 'document', url))}
+                    />
+                    {lesson.assignment.document && (
+                      <a href={lesson.assignment.document} target="_blank" rel="noopener noreferrer">
+                        Preview Document
+                      </a>
+                    )}
+                    <button type="button" onClick={() => removeAssignment(lIdx)} style={{ marginLeft: 8 }}>Remove Assignment</button>
+                  </div>
+                ) : (
+                  <button type="button" onClick={() => addAssignment(lIdx)}>Add Assignment</button>
+                )}
+              </div>
             </div>
           ))}
-          <button type="button" onClick={openLessonModal}>Add Lesson</button>
+          <button type="button" onClick={addLesson}>Add Lesson</button>
         </div>
 
         <div className="form-actions">
@@ -163,67 +199,6 @@ const CourseEdit = ({ user }) => {
           <button type="button" className="cancel-btn" onClick={() => navigate(`/courses/${id}`)}>Cancel</button>
         </div>
       </form>
-
-      {/* Lesson Modal */}
-      {showLessonModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h4>Add Lesson</h4>
-            <input
-              type="text"
-              placeholder="Lesson Title"
-              value={newLesson.title}
-              onChange={e => setNewLesson(prev => ({ ...prev, title: e.target.value }))}
-              required
-            />
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={e => handleFileUpload(e, url => setNewLesson(prev => ({ ...prev, material: url })))}
-              required
-            />
-            {newLesson.material && (
-              <a href={newLesson.material} target="_blank" rel="noopener noreferrer">
-                Preview Lesson Material
-              </a>
-            )}
-            <button type="button" onClick={addLesson} disabled={!newLesson.title || !newLesson.material}>
-              Add Lesson
-            </button>
-            <button type="button" onClick={closeLessonModal}>Cancel</button>
-          </div>
-        </div>
-      )}
-
-      {/* Assignment Modal */}
-      {showAssignmentModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h4>Add Assignment</h4>
-            <input
-              type="text"
-              placeholder="Assignment Title"
-              value={newAssignment.title}
-              onChange={e => setNewAssignment(prev => ({ ...prev, title: e.target.value }))}
-              required
-            />
-            <textarea
-              placeholder="Assignment Description"
-              value={newAssignment.material}
-              onChange={e => setNewAssignment(prev => ({ ...prev, material: e.target.value }))}
-              required
-            />
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={e => handleFileUpload(e, url => setNewAssignment(prev => ({ ...prev, document: url })))}
-            />
-            {newAssignment.document && <a href={newAssignment.document} target="_blank" rel="noopener noreferrer">Preview Document</a>}
-            <button type="button" onClick={addAssignment} disabled={!newAssignment.title || !newAssignment.material}>Add Assignment</button>
-            <button type="button" onClick={closeAssignmentModal}>Cancel</button>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

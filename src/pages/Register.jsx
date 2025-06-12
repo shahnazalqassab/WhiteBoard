@@ -36,7 +36,7 @@ const Register = () => {
     setFormValues(initialState)
     navigate('/user/login')
     } catch (error) {
-      alert('Registration failed. Please try again.');
+      alert(error.response.data.msg);
     }
   }
 
@@ -45,7 +45,7 @@ const Register = () => {
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <div className="input-wrapper">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">Username: *</label>
           <input
             onChange={handleChange}
             id="username"
@@ -56,7 +56,7 @@ const Register = () => {
           />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Name: *</label>
           <input
             onChange={handleChange}
             id="name"
@@ -67,7 +67,7 @@ const Register = () => {
           />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Email: *</label>
           <input
             onChange={handleChange}
             id="email"
@@ -78,7 +78,7 @@ const Register = () => {
           />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password: *</label>
           <input
             onChange={handleChange}
             type="password"
@@ -88,7 +88,7 @@ const Register = () => {
           />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="confirmPassword">Confirm Password</label>
+          <label htmlFor="confirmPassword">Confirm Password: (match to enable sign up)</label>
           <input
             onChange={handleChange}
             type="password"
@@ -98,7 +98,7 @@ const Register = () => {
           />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="category">Category</label>
+          <label htmlFor="category">Category: *</label>
           <select
             onChange={handleChange}
             id="category"
@@ -110,6 +110,8 @@ const Register = () => {
             <option value="teacher">Teacher</option>
           </select>
         </div>
+        <div className="registration-message">
+        <p>* Required Fields</p>
         <button
           disabled={
             !formValues.username ||
@@ -123,6 +125,7 @@ const Register = () => {
         >
           Sign Up
         </button>
+        </div>
       </form>
     </div>
   )

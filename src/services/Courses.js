@@ -21,6 +21,27 @@ export const GetCourseById = async (id) => {
   }
 }
 
+export const GetCoursesByOwner = async (ownerId) => {
+  try {
+    const response = await Client.get(`/courses/owner/${ownerId}`)
+    return Array.isArray(response.data) ? response.data : []
+    } catch (error) {
+    console.error(`Error fetching courses for owner with id ${ownerId}:`, error)
+    return [] 
+    }
+  }
+
+
+  export const GetCoursesByStudent = async (studentId) => {
+  try {
+    const response = await Client.get(`/courses/student/${studentId}`)
+    return Array.isArray(response.data) ? response.data : []
+    } catch (error) {
+    console.error(`Error fetching courses for student with id ${studentId}:`, error)
+    return [] 
+    }
+  }
+
 export const CreateCourse = async (courseData) => {
   try {
     const response = await Client.post('/courses', courseData,
@@ -70,6 +91,57 @@ export const DeleteCourse = async (id) => {
     return response.data
   } catch (error) {
     console.error(`Error deleting course with id ${id}:`, error)
+    throw error
+  }
+}
+
+export const EnrollInCourse = async (courseId) => {
+  try {
+    const response = await Client.post(
+      `/courses/${courseId}/enroll`,
+      {},
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(`Error enrolling in course with id ${courseId}:`, error)
+    throw error
+  }
+}
+
+
+export const UnenrollFromCourse = async (courseId) => {
+  try {
+    const response = await Client.post(
+      `/courses/${courseId}/unenroll`,
+      {},
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error(`Error un-enrolling from course with id ${courseId}:`, error)
+    throw error
+  }
+}
+
+export const GetEnrolledCourses = async () => {
+  try {
+    const response = await Client.get('/courses/enrolled', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching enrolled courses:', error)
     throw error
   }
 }

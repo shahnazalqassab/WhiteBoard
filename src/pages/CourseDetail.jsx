@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { GetCourseById, DeleteCourse, UpdateCourse } from '../services/Courses'
+import { GetCourseById, DeleteCourse, UpdateCourse, EnrollInCourse } from '../services/Courses'
 
 const CourseDetail = ({ user }) => {
   const { id } = useParams()
@@ -89,20 +89,25 @@ const CourseDetail = ({ user }) => {
 
   const handleEdit = () => navigate(`/courses/edit/${course._id}`)
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this course?')) {
-      try {
-        await DeleteCourse(course._id)
-        navigate('/courses')
-      } catch (err) {
-        alert('Failed to delete course.')
-      }
-    }
-  }
+  // const handleDelete = async () => {
+  //   if (window.confirm('Are you sure you want to delete this course?')) {
+  //     try {
+  //       await DeleteCourse(course._id)
+  //       navigate('/courses')
+  //     } catch (err) {
+  //       alert('Failed to delete course.')
+  //     }
+  //   }
+  // }
 
   if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {error}</div>
   if (!course) return <div>Course not found</div>
+
+
+  const handleEnrollment = async () => {
+    EnrollInCourse(course._id)
+  }
 
   return (
     <div className="course-detail">
@@ -124,6 +129,7 @@ const CourseDetail = ({ user }) => {
                 </a>
               )}
             </div>
+
             {lesson.assignment ? (
               <div className="assignment">
                 <h3>Assignment: {lesson.assignment.title}</h3>
@@ -137,6 +143,7 @@ const CourseDetail = ({ user }) => {
             ) : (
               <div>No assignments for this lesson.</div>
             )}
+
           </div>
         ))
       ) : (
@@ -157,23 +164,7 @@ const CourseDetail = ({ user }) => {
           ) : course.pendingEnrollments?.some(s => s._id === user._id) ? (
             <span className="pending-msg">Enrollment request pending approval.</span>
           ) : (
-            <button
-              onClick={async () => {
-                try {
-                  await fetch(`/courses/${course._id}/enroll`, {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    },
-                  })
-                  alert('Enrollment request sent!')
-                  window.location.reload()
-                } catch (err) {
-                  alert('Failed to send enrollment request.')
-                }
-              }}
-            >
+            <button onClick={handleEnrollment}>
               Enroll
             </button>
           )}
@@ -181,46 +172,7 @@ const CourseDetail = ({ user }) => {
       )}
 
       {user && user._id === course.owner?._id && course.pendingEnrollments?.length > 0 && (
-        <section className="pending-enrollments-section">
-          <h2>Pending Enrollment Requests</h2>
-          <ul>
-            {course.pendingEnrollments.map(student => (
-              <li key={student._id} style={{ marginBottom: '1em' }}>
-                <span>
-                  <strong>{student.name}</strong> ({student.email})
-                </span>
-                <button
-                  style={{ marginLeft: '1em', background: 'green', color: 'white' }}
-                  onClick={async () => {
-                    await fetch(`/courses/${course._id}/enrollments/${student._id}/accept`, {
-                      method: 'POST',
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                      },
-                    })
-                    window.location.reload()
-                  }}
-                >
-                  Accept
-                </button>
-                <button
-                  style={{ marginLeft: '0.5em', background: 'red', color: 'white' }}
-                  onClick={async () => {
-                    await fetch(`/courses/${course._id}/enrollments/${student._id}/decline`, {
-                      method: 'POST',
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                      },
-                    })
-                    window.location.reload()
-                  }}
-                >
-                  Decline
-                </button>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <div className='lessons-message'><p>You have Pending Enrollment Requests in this course</p></div>
       )}
 
       {showLessonModal && (

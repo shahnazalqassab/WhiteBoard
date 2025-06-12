@@ -549,3 +549,10 @@ button:disabled {
   font-weight: 700;
   letter-spacing: 1px;
 }
+
+.registration-message {
+  text-align: 'center';
+  margin: 2rem 0;
+  color: #888;
+  text-align: left;
+}

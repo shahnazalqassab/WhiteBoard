@@ -5,9 +5,11 @@ import { GetCourseById, DeleteCourse, UpdateCourse } from '../services/Courses'
 const CourseDetail = ({ user }) => {
   const { id } = useParams()
   const navigate = useNavigate()
+
   const [course, setCourse] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
   const [showLessonModal, setShowLessonModal] = useState(false)
   const [newLesson, setNewLesson] = useState({ title: '', description: '', material: '', assignment: null })
   const [showAssignmentForm, setShowAssignmentForm] = useState(false)
@@ -58,44 +60,34 @@ const CourseDetail = ({ user }) => {
 
   const addLesson = async () => {
     try {
-      // Always use the latest assignment state if the assignment form is open
-      let assignment = newLesson.assignment;
-      if (
-        showAssignmentForm &&
-        (newAssignment.title || newAssignment.description || newAssignment.document)
-      ) {
+      let assignment = newLesson.assignment
+
+      if (showAssignmentForm && (newAssignment.title || newAssignment.description || newAssignment.document)) {
         assignment = {
           title: newAssignment.title,
           description: newAssignment.description,
           document: newAssignment.document
         }
       }
+
       const lessonToAdd = {
         title: newLesson.title,
         description: newLesson.description || '',
         material: newLesson.material || '',
         assignment: assignment || undefined
       }
-      // Update local state immediately for instant feedback
+
       const updatedLessons = [...(course.lessons || []), lessonToAdd]
-      setCourse(prev => ({
-        ...prev,
-        lessons: updatedLessons
-      }))
+      setCourse(prev => ({ ...prev, lessons: updatedLessons }))
       setShowLessonModal(false)
-      // Update backend in background
+
       await UpdateCourse(id, { ...course, lessons: updatedLessons })
-      // Optionally refresh from backend after save
-      // const freshCourse = await GetCourseById(id)
-      // setCourse(freshCourse)
     } catch (err) {
       setError(err.message)
     }
   }
 
-  const handleEdit = () => {
-    navigate(`/courses/edit/${course._id}`)
-  }
+  const handleEdit = () => navigate(`/courses/edit/${course._id}`)
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this course?')) {
@@ -119,45 +111,36 @@ const CourseDetail = ({ user }) => {
       <p>Instructor: {course.owner?.name || 'Unknown'}</p>
       <p>Description: {course.description}</p>
 
-      {course.lessons && course.lessons.length > 0 ? (
-        course.lessons.map((lesson, id) => {
-          return (
-            <div className="lesson-section" key={id}>
-              <h2>Lesson: {lesson.title}</h2>
-              <div className="lesson-material">
-                <h3>Description:</h3>
-                <div>{lesson.description}</div>
-                {lesson.material && (
-                  <a href={lesson.material} target="_blank" rel="noopener noreferrer">
-                    View Lesson Material
+      {course.lessons?.length > 0 ? (
+        course.lessons.map((lesson, id) => (
+          <div className="lesson-section" key={id}>
+            <h2>Lesson: {lesson.title}</h2>
+            <div className="lesson-material">
+              <h3>Description:</h3>
+              <div>{lesson.description}</div>
+              {lesson.material && (
+                <a href={lesson.material} target="_blank" rel="noopener noreferrer">
+                  View Lesson Material
+                </a>
+              )}
+            </div>
+            {lesson.assignment ? (
+              <div className="assignment">
+                <h3>Assignment: {lesson.assignment.title}</h3>
+                <div>{lesson.assignment.description}</div>
+                {lesson.assignment.document && (
+                  <a className="button-document" href={lesson.assignment.document} target="_blank" rel="noopener noreferrer">
+                    View Assignment Document
                   </a>
                 )}
               </div>
-              {lesson.assignment ? (
-                <div className="assignment">
-                  <h3>Assignment: {lesson.assignment.title}</h3>
-                  <div>{lesson.assignment.description}</div>
-                  {lesson.assignment.document && (
-                    <a
-                      className="button-document"
-                      href={lesson.assignment.document}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Assignment Document
-                    </a>
-                  )}
-                </div>
-              ) : (
-                <div>No assignments for this lesson.</div>
-              )}
-            </div>
-          )
-        })
+            ) : (
+              <div>No assignments for this lesson.</div>
+            )}
+          </div>
+        ))
       ) : (
-        <div className="lessons-message">
-          No lessons have been added to this course yet.
-        </div>
+        <div className="lessons-message">No lessons have been added to this course yet.</div>
       )}
 
       {user && user._id === course.owner?._id && (
@@ -258,7 +241,7 @@ const CourseDetail = ({ user }) => {
                 <label>Lesson Description:</label>
                 <textarea
                   value={newLesson.description}
-                  onChange={event => setNewLesson(prev => ({ ...prev, description: event.target.value }))}
+                  onChange={e => setNewLesson(prev => ({ ...prev, description: e.target.value }))}
                   required
                 />
               </div>
@@ -283,7 +266,11 @@ const CourseDetail = ({ user }) => {
                   style={{ marginBottom: 8 }}
                   disabled={!!newLesson.assignment}
                 >
-                  {showAssignmentForm ? 'Cancel Assignment' : (newLesson.assignment ? 'Assignment Added' : 'Add Assignment')}
+                  {showAssignmentForm
+                    ? 'Cancel Assignment'
+                    : newLesson.assignment
+                      ? 'Assignment Added'
+                      : 'Add Assignment'}
                 </button>
                 {showAssignmentForm && (
                   <div className="assignment-form" style={{ marginTop: 8 }}>
@@ -327,21 +314,15 @@ const CourseDetail = ({ user }) => {
                     </button>
                   </div>
                 )}
-                {newLesson.assignment && (
-                  <ul>
-                    <li>{newLesson.assignment.title}</li>
-                  </ul>
-                )}
+                {newLesson.assignment && <ul><li>{newLesson.assignment.title}</li></ul>}
               </div>
               <div className="form-actions" style={{ marginTop: 16 }}>
-                <button
-                  type="button"
-                  onClick={addLesson}
-                  disabled={!newLesson.title}
-                >
+                <button type="button" onClick={addLesson} disabled={!newLesson.title}>
                   Add Lesson
                 </button>
-                <button type="button" onClick={closeLessonModal} style={{ marginLeft: 8 }}>Cancel</button>
+                <button type="button" onClick={closeLessonModal} style={{ marginLeft: 8 }}>
+                  Cancel
+                </button>
               </div>
             </form>
           </div>

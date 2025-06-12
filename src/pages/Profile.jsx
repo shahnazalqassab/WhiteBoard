@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import EditProfile from '../components/EditProfile'
-import { GetCoursesByOwner, GetCoursesByStudent, GetCourses } from '../services/Courses'
+import { GetCoursesByOwner, GetCoursesByStudent, GetCourses, enrollmentAccepted, enrollmentRejected } from '../services/Courses'
 
 const Profile = ({ user, setUser }) => {
   const [isEditing, setIsEditing] = useState(false)
@@ -39,6 +39,15 @@ const Profile = ({ user, setUser }) => {
     setIsEditing(false)
   }
 
+  const handleAcceptance = async (courseId, studentId) => {
+    enrollmentAccepted(courseId, studentId)
+  }
+
+  const handleRejection = async (courseId, studentId) => {
+    enrollmentRejected(courseId, studentId)
+
+  }
+
   return (
     <div className="profile-page">
       <h1>User Dashboard</h1>
@@ -69,7 +78,16 @@ const Profile = ({ user, setUser }) => {
                 {course.pendingEnrollments && course.pendingEnrollments.length > 0 ? (
                   <ul>
                     {course.pendingEnrollments.map(student => (
-                      <li key={student._id}>{student.name} ({student.email})</li>
+                      <li key={student._id}>{student.name} ({student.email})
+                      <span title="Approve"
+                      onClick={() => handleAcceptance(course._id, student._id)}
+                      > ✔️ 
+                      </span>
+                      <span title="Reject"
+                      onClick={() => handleRejection(course._id, student._id)}
+                      > ❌
+                      </span>
+                      </li>
                     ))}
                   </ul>
                 ) : (
